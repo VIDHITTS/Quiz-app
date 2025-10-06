@@ -3,10 +3,10 @@
   text-align: center;
   margin-bottom: 60px;
   padding: 80px 40px;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
   color: white;
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 20px 40px rgba(4, 120, 87, 0.3);
   width: 100%;
 }
 
@@ -50,7 +50,7 @@
 
 .hero-actions .btn-primary {
   background: white;
-  color: #059669;
+  color: #065f46;
 }
 
 .hero-actions .btn-primary:hover {
@@ -85,7 +85,7 @@
   font-weight: 800;
   margin-bottom: 50px;
   color: #1a202c;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -93,7 +93,7 @@
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
   width: 100%;
 }
@@ -111,7 +111,7 @@
 .feature:hover {
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-  border-color: #10b981;
+  border-color: #047857;
 }
 
 .feature h3 {
@@ -129,6 +129,12 @@
 }
 
 /* Mobile responsive */
+@media (max-width: 1200px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .hero {
     padding: 60px 20px;
@@ -157,7 +163,8 @@
   }
 
   .features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 }
 
@@ -177,5 +184,141 @@
 
   .btn {
     width: 200px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Trending Quizzes Section */
+.trending-section {
+  margin-top: 60px;
+  padding: 40px 0;
+}
+
+.trending-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #1a202c;
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.trending-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 350px));
+  gap: 25px;
+  margin-bottom: 40px;
+  justify-content: center;
+}
+
+.trending-quiz-card {
+  background: linear-gradient(135deg, white 0%, #f8fafc 100%);
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.trending-quiz-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  border-color: #047857;
+}
+
+.trending-quiz-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.quiz-description {
+  color: #4a5568;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  flex-grow: 1;
+}
+
+.quiz-meta {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.question-count {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.attempt-count {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.quiz-creator {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 15px;
+  font-style: italic;
+}
+
+.trending-quiz-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.loading-message {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.no-quizzes-message {
+  text-align: center;
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 16px;
+  border: 2px solid #e2e8f0;
+}
+
+.no-quizzes-message p {
+  font-size: 18px;
+  color: #4a5568;
+  margin-bottom: 20px;
+}
+
+/* Responsive design for trending section */
+@media (max-width: 768px) {
+  .trending-section h2 {
+    font-size: 2rem;
+  }
+  
+  .trending-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .trending-quiz-card {
+    padding: 20px;
   }
 }

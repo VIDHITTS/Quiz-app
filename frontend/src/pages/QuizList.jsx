@@ -76,9 +76,21 @@ function QuizList({ user }) {
             <div key={quiz._id} className="quiz-card">
               <div className="quiz-card-header">
                 <h3>{quiz.title}</h3>
-                <span className="quiz-questions-count">
-                  {quiz.questions?.length || 0} questions
-                </span>
+                <div className="quiz-meta-top">
+                  <span className="quiz-questions-count">
+                    {quiz.questions?.length || 0} questions
+                  </span>
+                  {!quiz.isPublic && (
+                    <span className="privacy-badge private">
+                      🔒 Private
+                    </span>
+                  )}
+                  {quiz.isPublic && (
+                    <span className="privacy-badge public">
+                      🌍 Public
+                    </span>
+                  )}
+                </div>
               </div>
 
               <p className="quiz-description">
@@ -96,9 +108,15 @@ function QuizList({ user }) {
 
               <div className="quiz-actions">
                 {user ? (
-                  <Link to={`/quiz/${quiz._id}`} className="btn btn-primary">
-                    Take Quiz
-                  </Link>
+                  quiz.isPublic ? (
+                    <Link to={`/quiz/${quiz._id}`} className="btn btn-primary">
+                      Take Quiz
+                    </Link>
+                  ) : (
+                    <Link to={`/quiz/${quiz._id}`} className="btn btn-warning">
+                      🔒 Access with PIN
+                    </Link>
+                  )
                 ) : (
                   <Link to="/login" className="btn btn-primary">
                     Login to Take Quiz

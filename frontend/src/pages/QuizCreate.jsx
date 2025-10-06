@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import "./QuizCreate.css";
 
 const API_BASE = "http://localhost:3451";
+const FRONTEND_BASE = "http://localhost:5174";
 
 function QuizCreate({ user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [createdQuizId, setCreatedQuizId] = useState(null);
   const [quiz, setQuiz] = useState({
     title: "",
     description: "",
@@ -45,7 +48,7 @@ function QuizCreate({ user }) {
     };
 
     // make sure only one option is correct
-    if (isCorrect) {
+    if (field === "correct" && value) {
       updatedQuestions[questionIndex].options.forEach((option, index) => {
         if (index !== optionIndex) {
           option.correct = false;
@@ -160,9 +163,8 @@ function QuizCreate({ user }) {
 
       if (response.ok) {
         const data = await response.json();
-        navigate("/dashboard", {
-          state: { message: "Quiz created successfully!" },
-        });
+        setCreatedQuizId(data.quiz._id);
+        setShowSuccessModal(true);
       } else {
         const data = await response.json();
         setError(data.error || "Failed to create quiz");
@@ -177,6 +179,28 @@ function QuizCreate({ user }) {
   if (!user) {
     return <div>Please log in to create a quiz.</div>;
   }
+
+  const copyQuizLink = async () => {
+    const quizLink = `${FRONTEND_BASE}/quiz/${createdQuizId}`;
+    try {
+      await navigator.clipboard.writeText(quizLink);
+      alert('Quiz link copied to clipboard!');
+    } catch (err) {
+      // fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = quizLink;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Quiz link copied to clipboard!');
+    }
+  };
+
+  const closeModalAndRedirect = () => {
+    setShowSuccessModal(false);
+    navigate("/dashboard");
+  };
 
   return (
     <div className="page-container">
@@ -344,6 +368,54 @@ function QuizCreate({ user }) {
           </button>
         </div>
       </form>
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="modal-overlay">
+          <div className="success-modal">
+            <div className="modal-header">
+              <h2>🎉 Quiz Created Successfully!</h2>
+            </div>
+            <div className="modal-content">
+              <p>Your quiz is ready and can be attempted by others!</p>
+              <div className="quiz-link-section">
+                <label>Share this link:</label>
+                <div className="link-display">
+                  <input 
+                    type="text" 
+                    value={`${FRONTEND_BASE}/quiz/${createdQuizId}`}
+                    readOnly
+                    className="quiz-link-input"
+                  />
+                  <button 
+                    type="button"
+                    onClick={copyQuizLink}
+                    className="btn btn-primary copy-btn"
+                  >
+                    📋 Copy Link
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button 
+                type="button"
+                onClick={closeModalAndRedirect}
+                className="btn btn-outline"
+              >
+                Go to Dashboard
+              </button>
+              <button 
+                type="button"
+                onClick={() => navigate(`/quiz/${createdQuizId}`)}
+                className="btn btn-primary"
+              >
+                Preview Quiz
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

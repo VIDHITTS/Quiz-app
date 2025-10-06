@@ -18,7 +18,7 @@ import QuizTake from "./pages/QuizTake";
 import QuizEdit from "./pages/QuizEdit";
 import Profile from "./pages/Profile";
 
-const API_BASE = "http://localhost:3451"; // my backend server
+const API_BASE = "http://localhost:3451";
 
 function App() {
   const [user, setUser] = useState(null);

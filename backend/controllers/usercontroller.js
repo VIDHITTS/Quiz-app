@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const Quiz = require("../models/quasync function getDashboardData(req, res) {");
+const Quiz = require("../models/quiz");
 const Attempt = require("../models/attempt");
 const mongoose = require("mongoose");
 
@@ -99,7 +99,7 @@ async function getDashboard(req, res) {
           averageScore:
             avgScore.length > 0 ? Math.round(avgScore[0].avgPercentage) : 0,
         },
-        recentQuizzes: userQuizzes,
+        recentQuizzes: myQuizzes,
         recentAttempts,
       },
     });

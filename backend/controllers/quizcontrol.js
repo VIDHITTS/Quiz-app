@@ -62,7 +62,7 @@ async function getAllQuizzes(req, res) {
   try {
     const { search, createdBy } = req.query;
 
-    let filter = { isPublic: true }; // only show public ones
+    let filter = {}; // show all quizzes now
 
     if (search) {
       filter.$or = [
@@ -73,12 +73,11 @@ async function getAllQuizzes(req, res) {
 
     if (createdBy) {
       filter.createdBy = createdBy;
-      delete filter.isPublic; // Allow viewing private quizzes if filtering by creator
     }
 
     const quizzes = await Quiz.find(filter)
       .populate("createdBy", "name email")
-      .select("-questions.options.correct") // Hide correct answers
+      .select("-questions.options.correct -accessPin") // Hide correct answers and PIN
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -267,6 +266,117 @@ async function deleteQuiz(req, res) {
   }
 }
 
+async function getTrendingQuizzes(req, res) {
+  try {
+    const limit = parseInt(req.query.limit) || 6; // Default to 6 trending quizzes
+
+    // Get trending public quizzes based on attempt count and recent activity
+    const trendingQuizzes = await Quiz.aggregate([
+      {
+        // Only public quizzes
+        $match: { isPublic: true }
+      },
+      {
+        // Add attempt count from attempts collection
+        $lookup: {
+          from: 'attempts',
+          localField: '_id',
+          foreignField: 'quiz',
+          as: 'attempts'
+        }
+      },
+      {
+        // Add calculated fields
+        $addFields: {
+          attemptCount: { $size: '$attempts' },
+          recentAttempts: {
+            $size: {
+              $filter: {
+                input: '$attempts',
+                cond: {
+                  $gte: ['$$this.createdAt', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)] // Last 7 days
+                }
+              }
+            }
+          },
+          trendingScore: {
+            $add: [
+              { $multiply: [{ $size: '$attempts' }, 1] }, // Total attempts weight
+              { $multiply: [
+                {
+                  $size: {
+                    $filter: {
+                      input: '$attempts',
+                      cond: {
+                        $gte: ['$$this.createdAt', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)]
+                      }
+                    }
+                  }
+                }, 3] // Recent attempts weight (3x multiplier)
+              }
+            ]
+          }
+        }
+      },
+      {
+        // Remove attempts array and sensitive data
+        $project: {
+          attempts: 0,
+          'questions.options.correct': 0,
+          accessPin: 0
+        }
+      },
+      {
+        // Populate creator info
+        $lookup: {
+          from: 'users',
+          localField: 'createdBy',
+          foreignField: '_id',
+          as: 'createdBy'
+        }
+      },
+      {
+        // Format creator info
+        $addFields: {
+          createdBy: {
+            $arrayElemAt: [
+              {
+                $map: {
+                  input: '$createdBy',
+                  as: 'user',
+                  in: {
+                    _id: '$$user._id',
+                    name: '$$user.name',
+                    email: '$$user.email'
+                  }
+                }
+              },
+              0
+            ]
+          }
+        }
+      },
+      {
+        // Sort by trending score (highest first)
+        $sort: { trendingScore: -1, createdAt: -1 }
+      },
+      {
+        // Limit results
+        $limit: limit
+      }
+    ]);
+
+    res.status(200).json({
+      success: true,
+      count: trendingQuizzes.length,
+      data: trendingQuizzes,
+    });
+  } catch (error) {
+    console.error("Error fetching trending quizzes:", error);
+    res.status(500).json({ error: "Failed to fetch trending quizzes" });
+  }
+}
+
 module.exports = {
   createQuiz,
   getAllQuizzes,
@@ -275,4 +385,5 @@ module.exports = {
   getQuizForAttempt,
   updateQuiz,
   deleteQuiz,
+  getTrendingQuizzes,
 };

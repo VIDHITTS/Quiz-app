@@ -25,7 +25,7 @@
   color: #1a202c;
   font-size: 32px;
   font-weight: 800;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -63,8 +63,8 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #10b981;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+  border-color: #047857;
+  box-shadow: 0 0 0 4px rgba(4, 120, 87, 0.1);
   transform: translateY(-1px);
 }
 
@@ -85,7 +85,7 @@
 
 .success-message {
   background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-  color: #059669;
+  color: #065f46;
   padding: 16px 20px;
   border-radius: 12px;
   margin-bottom: 20px;

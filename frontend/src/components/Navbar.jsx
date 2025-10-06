@@ -11,7 +11,7 @@ function Navbar({ user, logout }) {
 
         <div className="nav-menu">
           <Link to="/quizzes" className="nav-link">
-            All Quizzes
+            Browse Quizzes
           </Link>
 
           {user ? (

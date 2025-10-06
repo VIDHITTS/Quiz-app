@@ -7,6 +7,7 @@ const {
   getQuizForAttempt,
   updateQuiz,
   deleteQuiz,
+  getTrendingQuizzes,
 } = require("../controllers/quizcontrol.js");
 const protect = require("../middleware/authmiddleware.js");
 
@@ -14,6 +15,7 @@ const router = express.Router();
 
 // Public routes (no auth required)
 router.get("/public", getAllQuizzes);
+router.get("/trending", getTrendingQuizzes);
 router.post("/:id/access", getQuizForAttempt);
 
 // Protected routes (auth required)

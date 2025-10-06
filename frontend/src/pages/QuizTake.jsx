@@ -138,20 +138,21 @@ function QuizTake({ user }) {
     return (
       <div className="quiz-take">
         <div className="pin-form">
-          <h2>Private Quiz</h2>
-          <p>This quiz requires a PIN to access.</p>
+          <h2>🔒 Protected Quiz</h2>
+          <p>This quiz is private and requires an access code.</p>
+          <p className="pin-hint">Ask the quiz creator for the PIN to continue.</p>
           {error && <div className="error">{error}</div>}
           <form onSubmit={handlePinSubmit}>
             <input
               type="text"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
-              placeholder="Enter PIN"
+              placeholder="Enter access PIN"
               maxLength="10"
               required
             />
             <button type="submit" className="btn btn-primary">
-              Access Quiz
+              🔓 Access Quiz
             </button>
           </form>
         </div>

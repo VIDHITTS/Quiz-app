@@ -1,7 +1,32 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./Home.css";
 
+const API_BASE = "http://localhost:3451";
+
 function Home({ user }) {
+  const [trendingQuizzes, setTrendingQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTrendingQuizzes();
+  }, []);
+
+  const fetchTrendingQuizzes = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/quizzes/trending?limit=6`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setTrendingQuizzes(data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching trending quizzes:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="page-container">
       <div className="hero">
@@ -29,26 +54,47 @@ function Home({ user }) {
         )}
       </div>
 
-      <div className="features">
-        <h2>Features</h2>
-        <div className="features-grid">
-          <div className="feature">
-            <h3>Create Quizzes</h3>
-            <p>Build custom quizzes with multiple choice questions</p>
+      {/* Trending Quizzes Section */}
+      <div className="trending-section">
+        <h2>🔥 Trending Public Quizzes</h2>
+        {loading ? (
+          <div className="loading-message">Loading trending quizzes...</div>
+        ) : trendingQuizzes.length > 0 ? (
+          <div className="trending-grid">
+            {trendingQuizzes.map((quiz) => (
+              <div key={quiz._id} className="trending-quiz-card">
+                <h3>{quiz.title}</h3>
+                <p className="quiz-description">
+                  {quiz.description || "No description available"}
+                </p>
+                <div className="quiz-meta">
+                  <span className="question-count">
+                    {quiz.questions?.length || 0} questions
+                  </span>
+                  <span className="attempt-count">
+                    {quiz.attemptCount || 0} attempts
+                  </span>
+                </div>
+                <div className="quiz-creator">
+                  By: {quiz.createdBy?.name || "Anonymous"}
+                </div>
+                <Link 
+                  to={`/quiz/${quiz._id}`} 
+                  className="btn btn-primary btn-small"
+                >
+                  Try Quiz
+                </Link>
+              </div>
+            ))}
           </div>
-          <div className="feature">
-            <h3>Take Quizzes</h3>
-            <p>Challenge yourself with quizzes from other users</p>
+        ) : (
+          <div className="no-quizzes-message">
+            <p>No trending quizzes available yet. Be the first to create one!</p>
+            <Link to="/create-quiz" className="btn btn-primary">
+              Create Quiz
+            </Link>
           </div>
-          <div className="feature">
-            <h3>Track Progress</h3>
-            <p>Monitor your quiz performance and scores</p>
-          </div>
-          <div className="feature">
-            <h3>Private Quizzes</h3>
-            <p>Create private quizzes with PIN protection</p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
