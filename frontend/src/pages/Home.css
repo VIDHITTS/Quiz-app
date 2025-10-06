@@ -1,120 +1,180 @@
-.home {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
+/* Home page specific styles */
 .hero {
   text-align: center;
-  margin-bottom: 4rem;
-  padding: 4rem 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin-bottom: 60px;
+  padding: 80px 40px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
-  border-radius: 12px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+  width: 100%;
 }
 
 .hero h1 {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  font-weight: 700;
+  font-size: 4rem;
+  margin-bottom: 20px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  opacity: 0.9;
+  font-size: 24px;
+  margin-bottom: 40px;
+  opacity: 0.95;
+  font-weight: 500;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-actions {
   display: flex;
-  gap: 1rem;
+  gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.btn {
-  padding: 0.8rem 2rem;
+/* Override button styles for hero section */
+.hero-actions .btn {
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 700;
   text-decoration: none;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 12px;
   transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
+  display: inline-block;
+  min-width: 180px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.btn-primary {
-  background-color: #3498db;
+.hero-actions .btn-primary {
+  background: white;
+  color: #059669;
+}
+
+.hero-actions .btn-primary:hover {
+  background: #f8fafc;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.hero-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
   color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 
-.btn-primary:hover {
-  background-color: #2980b9;
-  transform: translateY(-2px);
+.hero-actions .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
-.btn-secondary {
-  background-color: transparent;
-  color: white;
-  border: 2px solid white;
-}
-
-.btn-secondary:hover {
-  background-color: white;
-  color: #667eea;
-  transform: translateY(-2px);
+/* Features section */
+.features {
+  margin-top: 80px;
+  width: 100%;
 }
 
 .features h2 {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  color: #2c3e50;
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 50px;
+  color: #1a202c;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  width: 100%;
 }
 
 .feature {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, white 0%, #f8fafc 100%);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   text-align: center;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  border: 2px solid #e2e8f0;
 }
 
 .feature:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  border-color: #10b981;
 }
 
 .feature h3 {
-  color: #2c3e50;
-  margin-bottom: 1rem;
-  font-size: 1.3rem;
+  color: #1a202c;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
 .feature p {
-  color: #7f8c8d;
+  color: #4a5568;
+  font-size: 16px;
   line-height: 1.6;
+  margin: 0;
 }
 
+/* Mobile responsive */
 @media (max-width: 768px) {
+  .hero {
+    padding: 60px 20px;
+  }
+
   .hero h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
-  
+
   .hero p {
-    font-size: 1rem;
+    font-size: 18px;
   }
-  
+
   .hero-actions {
     flex-direction: column;
     align-items: center;
   }
-  
+
+  .hero-actions .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .features h2 {
+    font-size: 2.2rem;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
   .btn {
     width: 200px;
   }

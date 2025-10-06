@@ -1,5 +1,5 @@
 .profile {
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
@@ -20,14 +20,15 @@
 }
 
 .profile-content {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, white 0%, #f8fafc 100%);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e2e8f0;
   overflow: hidden;
 }
 
 .profile-card {
-  padding: 2rem;
+  padding: 3rem;
 }
 
 .profile-avatar {
@@ -106,6 +107,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
+  color: #2d3748;
   transition: border-color 0.3s;
 }
 
@@ -131,15 +133,15 @@
   .profile {
     padding: 1rem;
   }
-  
+
   .profile-card {
     padding: 1.5rem;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .avatar-circle {
     width: 60px;
     height: 60px;

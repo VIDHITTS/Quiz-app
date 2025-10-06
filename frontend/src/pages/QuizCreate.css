@@ -50,6 +50,7 @@
   border: 1px solid #ddd;
   border-radius: 6px;
   font-size: 1rem;
+  color: #2d3748;
   transition: border-color 0.3s;
 }
 
@@ -129,6 +130,7 @@
   margin: 0;
   border: none;
   background: transparent;
+  color: #2d3748;
 }
 
 .option-builder input[type="text"]:focus {
@@ -180,23 +182,23 @@
   .quiz-create {
     padding: 1rem;
   }
-  
+
   .quiz-form {
     padding: 1.5rem;
   }
-  
+
   .question-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-  
+
   .option-builder {
     flex-direction: column;
     align-items: stretch;
     gap: 0.5rem;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }

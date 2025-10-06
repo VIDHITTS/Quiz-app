@@ -7,7 +7,9 @@ async function register(req, res) {
     const { name, email, password } = req.body;
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ msg: "User already exists" });
+      return res
+        .status(400)
+        .json({ error: "User already exists with this email" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -30,7 +32,7 @@ async function register(req, res) {
       user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (err) {
-    res.status(500).json({ msg: "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 }
 

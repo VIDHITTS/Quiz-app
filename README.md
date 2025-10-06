@@ -5,12 +5,14 @@ A full-stack quiz application built with React frontend and Node.js backend, fea
 ## Features
 
 ### Authentication
+
 - User registration and login
 - JWT-based authentication with secure cookies
 - Password hashing with bcrypt
 - Protected routes and API endpoints
 
 ### Quiz Management
+
 - Create custom quizzes with multiple choice questions
 - Edit existing quizzes (only by quiz creator)
 - Public and private quizzes (with PIN protection)
@@ -18,12 +20,14 @@ A full-stack quiz application built with React frontend and Node.js backend, fea
 - View quiz statistics
 
 ### Quiz Taking
+
 - Take quizzes with real-time progress tracking
 - Multiple choice questions with radio button selection
 - Submit answers and get instant results
 - Score calculation and feedback
 
 ### User Features
+
 - User dashboard with quiz statistics
 - Profile management with avatar display
 - View quiz history and attempts
@@ -32,6 +36,7 @@ A full-stack quiz application built with React frontend and Node.js backend, fea
 ## Tech Stack
 
 ### Backend
+
 - **Node.js** with Express.js framework
 - **MongoDB** with Mongoose ODM
 - **JWT** for authentication
@@ -40,6 +45,7 @@ A full-stack quiz application built with React frontend and Node.js backend, fea
 - **cookie-parser** for cookie handling
 
 ### Frontend
+
 - **React** with Vite build tool
 - **React Router DOM** for navigation
 - **Native Fetch API** for HTTP requests
@@ -95,6 +101,7 @@ Quiz-app/
 ## Installation & Setup
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - MongoDB (local installation or MongoDB Atlas)
 - npm or yarn package manager
@@ -102,16 +109,19 @@ Quiz-app/
 ### Backend Setup
 
 1. Navigate to the backend directory:
+
 ```bash
 cd backend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Create a `.env` file in the backend directory:
+
 ```env
 MONGODB_URI=mongodb://127.0.0.1:27017/quizapp
 JWT_SECRET=your_jwt_secret_key_here
@@ -119,6 +129,7 @@ PORT=3451
 ```
 
 4. Start the backend server:
+
 ```bash
 npm start
 ```
@@ -128,16 +139,19 @@ The backend will run on `http://localhost:3451`
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
+
 ```bash
 cd frontend
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -151,11 +165,13 @@ Make sure MongoDB is running on your system. The application will automatically 
 ## API Endpoints
 
 ### Authentication
+
 - `POST /register` - User registration
 - `POST /login` - User login
 - `POST /logout` - User logout
 
 ### Quizzes
+
 - `GET /quizzes` - Get all public quizzes
 - `GET /quizzes/:id` - Get specific quiz
 - `POST /quizzes` - Create new quiz (authenticated)
@@ -164,17 +180,20 @@ Make sure MongoDB is running on your system. The application will automatically 
 - `POST /quizzes/:id/access` - Access private quiz with PIN
 
 ### Quiz Attempts
+
 - `POST /attempts/submit` - Submit quiz attempt
 - `GET /attempts/user/:userId` - Get user's attempts
 - `GET /attempts/quiz/:quizId` - Get quiz attempts (owner only)
 
 ### Users
+
 - `GET /users/profile` - Get user profile
 - `PUT /users/profile` - Update user profile
 
 ## Usage
 
 ### Creating a Quiz
+
 1. Register/Login to your account
 2. Navigate to "Create Quiz" from the dashboard
 3. Fill in quiz details (title, description)
@@ -184,6 +203,7 @@ Make sure MongoDB is running on your system. The application will automatically 
 7. Submit to create the quiz
 
 ### Taking a Quiz
+
 1. Browse available quizzes from "Browse Quizzes"
 2. Click "Take Quiz" on any quiz
 3. If private, enter the required PIN
@@ -191,6 +211,7 @@ Make sure MongoDB is running on your system. The application will automatically 
 5. Submit to see your results
 
 ### Managing Quizzes
+
 1. View your created quizzes from the dashboard
 2. Edit or delete quizzes you've created
 3. View attempt statistics for your quizzes
@@ -199,12 +220,14 @@ Make sure MongoDB is running on your system. The application will automatically 
 ## Features in Detail
 
 ### Authentication System
+
 - Secure JWT tokens stored in httpOnly cookies
 - Password hashing using bcrypt with salt rounds
 - Automatic token refresh and session management
 - Protected routes for authenticated users only
 
 ### Quiz Creation
+
 - Dynamic question addition/removal
 - Multiple choice options (4 per question)
 - Radio button selection for correct answers
@@ -212,6 +235,7 @@ Make sure MongoDB is running on your system. The application will automatically 
 - Private quiz PIN protection
 
 ### Quiz Taking Interface
+
 - Real-time progress tracking
 - Question navigation
 - Answer persistence during session
@@ -219,6 +243,7 @@ Make sure MongoDB is running on your system. The application will automatically 
 - Instant score calculation and feedback
 
 ### Responsive Design
+
 - Mobile-first CSS approach
 - Flexible grid layouts
 - Touch-friendly interface elements
@@ -227,17 +252,20 @@ Make sure MongoDB is running on your system. The application will automatically 
 ## Development Notes
 
 ### Port Configuration
+
 - Backend runs on port 3451 (changed from 5000 due to macOS AirPlay conflict)
 - Frontend runs on port 5173 (Vite default)
 - MongoDB runs on default port 27017
 
 ### Error Handling
+
 - Comprehensive error messages for API failures
 - Form validation with user-friendly feedback
 - Network error handling with retry mechanisms
 - MongoDB connection error handling
 
 ### Security Features
+
 - CORS configuration for cross-origin requests
 - JWT secret key for token signing
 - Password hashing before database storage

@@ -1,45 +1,45 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './QuizCreate.css'; // Reuse the same styling
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./QuizCreate.css";
 
-const API_BASE = 'http://localhost:3451';
+const API_BASE = "http://localhost:3451";
 
 function QuizEdit({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     isPrivate: false,
-    accessPin: '',
-    questions: []
+    accessPin: "",
+    questions: [],
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (user) {
       fetchQuiz();
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   }, [id, user, navigate]);
 
   const fetchQuiz = async () => {
     try {
       const response = await fetch(`${API_BASE}/quizzes/${id}`, {
-        credentials: 'include'
+        credentials: "include",
       });
 
       if (response.ok) {
         const data = await response.json();
         setQuiz(data.quiz);
       } else {
-        setError('Quiz not found or not authorized');
+        setError("Quiz not found or not authorized");
       }
     } catch (error) {
-      setError('Network error');
+      setError("Network error");
     } finally {
       setLoading(false);
     }
@@ -49,29 +49,32 @@ function QuizEdit({ user }) {
     const { name, value, type, checked } = e.target;
     setQuiz({
       ...quiz,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
   const addQuestion = () => {
     setQuiz({
       ...quiz,
-      questions: [...quiz.questions, {
-        text: '',
-        options: [
-          { text: '', isCorrect: false },
-          { text: '', isCorrect: false },
-          { text: '', isCorrect: false },
-          { text: '', isCorrect: false }
-        ]
-      }]
+      questions: [
+        ...quiz.questions,
+        {
+          text: "",
+          options: [
+            { text: "", isCorrect: false },
+            { text: "", isCorrect: false },
+            { text: "", isCorrect: false },
+            { text: "", isCorrect: false },
+          ],
+        },
+      ],
     });
   };
 
   const removeQuestion = (questionIndex) => {
     setQuiz({
       ...quiz,
-      questions: quiz.questions.filter((_, index) => index !== questionIndex)
+      questions: quiz.questions.filter((_, index) => index !== questionIndex),
     });
   };
 
@@ -91,11 +94,11 @@ function QuizEdit({ user }) {
         const updatedOptions = question.options.map((option, oIndex) => {
           if (oIndex === optionIndex) {
             // If setting this option as correct, mark others as false
-            if (field === 'isCorrect' && value) {
+            if (field === "isCorrect" && value) {
               return { ...option, [field]: value };
             }
             return { ...option, [field]: value };
-          } else if (field === 'isCorrect' && value) {
+          } else if (field === "isCorrect" && value) {
             // Uncheck other options
             return { ...option, isCorrect: false };
           }
@@ -111,17 +114,16 @@ function QuizEdit({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    setError('');
+    setError("");
 
-    // Validation
     if (!quiz.title.trim()) {
-      setError('Quiz title is required');
+      setError("Quiz title is required");
       setSaving(false);
       return;
     }
 
     if (quiz.questions.length === 0) {
-      setError('At least one question is required');
+      setError("At least one question is required");
       setSaving(false);
       return;
     }
@@ -134,7 +136,9 @@ function QuizEdit({ user }) {
         return;
       }
 
-      const hasCorrectAnswer = question.options.some(option => option.isCorrect);
+      const hasCorrectAnswer = question.options.some(
+        (option) => option.isCorrect
+      );
       if (!hasCorrectAnswer) {
         setError(`Question ${i + 1} must have a correct answer`);
         setSaving(false);
@@ -151,29 +155,31 @@ function QuizEdit({ user }) {
     }
 
     if (quiz.isPrivate && !quiz.accessPin.trim()) {
-      setError('Access PIN is required for private quizzes');
+      setError("Access PIN is required for private quizzes");
       setSaving(false);
       return;
     }
 
     try {
       const response = await fetch(`${API_BASE}/quizzes/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(quiz),
       });
 
       if (response.ok) {
-        navigate('/dashboard', { state: { message: 'Quiz updated successfully!' } });
+        navigate("/dashboard", {
+          state: { message: "Quiz updated successfully!" },
+        });
       } else {
         const data = await response.json();
-        setError(data.message || 'Failed to update quiz');
+        setError(data.message || "Failed to update quiz");
       }
     } catch (error) {
-      setError('Network error');
+      setError("Network error");
     } finally {
       setSaving(false);
     }
@@ -184,8 +190,8 @@ function QuizEdit({ user }) {
   if (error && !quiz.title) return <div className="error">{error}</div>;
 
   return (
-    <div className="quiz-create">
-      <div className="quiz-header">
+    <div className="page-container">
+      <div className="page-header">
         <h1>Edit Quiz</h1>
         <p>Update your quiz details, questions, and settings</p>
       </div>
@@ -276,7 +282,9 @@ function QuizEdit({ user }) {
                 <input
                   type="text"
                   value={question.text}
-                  onChange={(e) => updateQuestion(questionIndex, 'text', e.target.value)}
+                  onChange={(e) =>
+                    updateQuestion(questionIndex, "text", e.target.value)
+                  }
                   placeholder="Enter your question"
                   required
                 />
@@ -289,7 +297,14 @@ function QuizEdit({ user }) {
                     <input
                       type="text"
                       value={option.text}
-                      onChange={(e) => updateOption(questionIndex, optionIndex, 'text', e.target.value)}
+                      onChange={(e) =>
+                        updateOption(
+                          questionIndex,
+                          optionIndex,
+                          "text",
+                          e.target.value
+                        )
+                      }
                       placeholder={`Option ${optionIndex + 1}`}
                       required
                     />
@@ -298,7 +313,14 @@ function QuizEdit({ user }) {
                         type="radio"
                         name={`question-${questionIndex}-correct`}
                         checked={option.isCorrect}
-                        onChange={(e) => updateOption(questionIndex, optionIndex, 'isCorrect', e.target.checked)}
+                        onChange={(e) =>
+                          updateOption(
+                            questionIndex,
+                            optionIndex,
+                            "isCorrect",
+                            e.target.checked
+                          )
+                        }
                       />
                       <span>Correct</span>
                     </label>
@@ -323,19 +345,15 @@ function QuizEdit({ user }) {
         </div>
 
         <div className="form-actions">
-          <button 
-            type="button" 
-            onClick={() => navigate('/dashboard')}
+          <button
+            type="button"
+            onClick={() => navigate("/dashboard")}
             className="btn btn-secondary"
           >
             Cancel
           </button>
-          <button 
-            type="submit" 
-            className="btn btn-primary"
-            disabled={saving}
-          >
-            {saving ? 'Updating...' : 'Update Quiz'}
+          <button type="submit" className="btn btn-primary" disabled={saving}>
+            {saving ? "Updating..." : "Update Quiz"}
           </button>
         </div>
       </form>

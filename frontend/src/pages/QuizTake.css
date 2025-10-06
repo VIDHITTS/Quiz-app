@@ -28,7 +28,7 @@
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.5rem;
   border-left: 4px solid #3498db;
 }
@@ -98,7 +98,7 @@
   background: white;
   padding: 3rem;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   text-align: center;
   max-width: 400px;
   margin: 4rem auto;
@@ -123,6 +123,7 @@
   font-size: 1.1rem;
   text-align: center;
   letter-spacing: 2px;
+  color: #2d3748;
 }
 
 .pin-form input:focus {
@@ -137,7 +138,7 @@
   border-radius: 8px;
   margin-bottom: 2rem;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .progress-text {
@@ -164,23 +165,23 @@
   .quiz-take {
     padding: 1rem;
   }
-  
+
   .quiz-take .quiz-header {
     padding: 1.5rem;
   }
-  
+
   .quiz-take .quiz-header h1 {
     font-size: 1.5rem;
   }
-  
+
   .quiz-take .question-card {
     padding: 1.5rem;
   }
-  
+
   .quiz-take .option {
     padding: 0.8rem;
   }
-  
+
   .pin-form {
     margin: 2rem auto;
     padding: 2rem;

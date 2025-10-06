@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 function Navbar({ user, logout }) {
   return (
@@ -8,12 +8,12 @@ function Navbar({ user, logout }) {
         <Link to="/" className="nav-logo">
           Quiz App
         </Link>
-        
+
         <div className="nav-menu">
           <Link to="/quizzes" className="nav-link">
             All Quizzes
           </Link>
-          
+
           {user ? (
             <>
               <Link to="/dashboard" className="nav-link">

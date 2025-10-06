@@ -1,51 +1,63 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 
-// load env variables first
+// need env variables
 dotenv.config();
 
-const express = require('express');
-const connectDB = require('./config/db');
-const cookieParser = require('cookie-parser');
+const express = require("express");
+const connectDB = require("./config/db");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-const { register, login, logout } = require('./controllers/authcontroller.js');
-const quizRoutes = require('./routes/quizroutes.js');
-const attemptRoutes = require('./routes/attemptroutes.js');
-const userRoutes = require('./routes/userroutes.js');
+const { register, login, logout } = require("./controllers/authcontroller.js");
+const quizRoutes = require("./routes/quizroutes.js");
+const attemptRoutes = require("./routes/attemptroutes.js");
+const userRoutes = require("./routes/userroutes.js");
 
 const app = express();
+
+// allow frontend to connect
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5174"], // Allow both possible frontend ports
+    credentials: true, // Allow cookies to be sent
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
 
-// middleware: simple request logger
+// log requests
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
   next();
 });
 
-// auth routes (POST)
-app.post('/register', register);
-app.post('/login', login);
-app.post('/logout', logout);
+// login/register stuff
+app.post("/register", register);
+app.post("/login", login);
+app.post("/logout", logout);
 
-// simple test route
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Backend is working!', timestamp: new Date().toISOString() });
+// test if server works
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "Backend is working!",
+    timestamp: new Date().toISOString(),
+  });
 });
 
-// quiz routes
-app.use('/quizzes', quizRoutes);
-app.use('/attempts', attemptRoutes);
-app.use('/users', userRoutes);
+// quiz stuff
+app.use("/quizzes", quizRoutes);
+app.use("/attempts", attemptRoutes);
+app.use("/users", userRoutes);
 
 const PORT = process.env.PORT || 3040;
 
-// start server after DB connection is successful
+// start server when db is ready
 connectDB()
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => {
-    console.error('Failed to connect to DB, server not started', err);
+    console.error("Failed to connect to DB, server not started", err);
     process.exit(1);
   });

@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import './Profile.css';
+import { useState, useEffect } from "react";
+import "./Profile.css";
 
-const API_BASE = 'http://localhost:3451';
+const API_BASE = "http://localhost:3451";
 
 function Profile({ user }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: ''
+    name: "",
+    email: "",
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function Profile({ user }) {
   const fetchProfile = async () => {
     try {
       const response = await fetch(`${API_BASE}/users/profile`, {
-        credentials: 'include'
+        credentials: "include",
       });
 
       if (response.ok) {
@@ -29,13 +29,13 @@ function Profile({ user }) {
         setProfile(data.user);
         setFormData({
           name: data.user.name,
-          email: data.user.email
+          email: data.user.email,
         });
       } else {
-        setError('Failed to load profile');
+        setError("Failed to load profile");
       }
     } catch (error) {
-      setError('Network error');
+      setError("Network error");
     } finally {
       setLoading(false);
     }
@@ -43,49 +43,49 @@ function Profile({ user }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     try {
       const response = await fetch(`${API_BASE}/users/profile`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
         const data = await response.json();
         setProfile(data.user);
-        setSuccess('Profile updated successfully!');
+        setSuccess("Profile updated successfully!");
         setEditing(false);
       } else {
         const data = await response.json();
-        setError(data.error || 'Failed to update profile');
+        setError(data.error || "Failed to update profile");
       }
     } catch (error) {
-      setError('Network error');
+      setError("Network error");
     }
   };
 
   const handleCancel = () => {
     setFormData({
       name: profile.name,
-      email: profile.email
+      email: profile.email,
     });
     setEditing(false);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
   };
 
   if (loading) return <div className="loading">Loading profile...</div>;
   if (!profile) return <div className="error">Profile not found</div>;
 
   return (
-    <div className="profile">
-      <div className="profile-header">
+    <div className="page-container">
+      <div className="page-header">
         <h1>My Profile</h1>
         <p>Manage your account information</p>
       </div>
@@ -109,7 +109,9 @@ function Profile({ user }) {
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                 />
               </div>
@@ -119,13 +121,19 @@ function Profile({ user }) {
                 <input
                   type="email"
                   value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   required
                 />
               </div>
 
               <div className="form-actions">
-                <button type="button" onClick={handleCancel} className="btn btn-secondary">
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="btn btn-secondary"
+                >
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
@@ -164,7 +172,10 @@ function Profile({ user }) {
                 </>
               )}
 
-              <button onClick={() => setEditing(true)} className="btn btn-primary">
+              <button
+                onClick={() => setEditing(true)}
+                className="btn btn-primary"
+              >
                 Edit Profile
               </button>
             </div>

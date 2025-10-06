@@ -1,28 +1,28 @@
-const express = require('express');
-const { 
-  createQuiz, 
-  getAllQuizzes, 
+const express = require("express");
+const {
+  createQuiz,
+  getAllQuizzes,
   getMyQuizzes,
-  getQuizById, 
+  getQuizById,
   getQuizForAttempt,
   updateQuiz,
-  deleteQuiz 
-} = require('../controllers/quizcontrol.js');
-const protect = require('../middleware/authmiddleware.js');
+  deleteQuiz,
+} = require("../controllers/quizcontrol.js");
+const protect = require("../middleware/authmiddleware.js");
 
 const router = express.Router();
 
 // Public routes (no auth required)
-router.get('/public', getAllQuizzes); // Get all public quizzes
-router.post('/:id/access', getQuizForAttempt); // Get quiz for taking (with PIN check)
+router.get("/public", getAllQuizzes);
+router.post("/:id/access", getQuizForAttempt);
 
 // Protected routes (auth required)
 router.use(protect);
 
-router.post('/', createQuiz); // Create quiz
-router.get('/my-quizzes', getMyQuizzes); // Get user's quizzes
-router.get('/:id', getQuizById); // Get quiz by ID
-router.put('/:id', updateQuiz); // Update quiz
-router.delete('/:id', deleteQuiz); // Delete quiz
+router.post("/", createQuiz);
+router.get("/my-quizzes", getMyQuizzes);
+router.get("/:id", getQuizById);
+router.put("/:id", updateQuiz);
+router.delete("/:id", deleteQuiz);
 
 module.exports = router;

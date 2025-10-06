@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
-import './Home.css';
+import { Link } from "react-router-dom";
+import "./Home.css";
 
 function Home({ user }) {
   return (
-    <div className="home">
+    <div className="page-container">
       <div className="hero">
         <h1>Welcome to Quiz App</h1>
         <p>Create, share, and take quizzes with ease!</p>
-        
+
         {user ? (
           <div className="hero-actions">
             <Link to="/dashboard" className="btn btn-primary">
@@ -28,7 +28,7 @@ function Home({ user }) {
           </div>
         )}
       </div>
-      
+
       <div className="features">
         <h2>Features</h2>
         <div className="features-grid">

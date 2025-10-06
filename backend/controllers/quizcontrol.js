@@ -4,19 +4,35 @@ async function createQuiz(req, res) {
   try {
     const { title, description, questions, isPublic, accessPin } = req.body;
 
-    if (!title || !questions || !Array.isArray(questions) || questions.length === 0) {
-      return res.status(400).json({ error: "Title and questions array required" });
+    if (
+      !title ||
+      !questions ||
+      !Array.isArray(questions) ||
+      questions.length === 0
+    ) {
+      return res
+        .status(400)
+        .json({ error: "Title and questions array required" });
     }
 
     // Validate questions format
     for (let question of questions) {
-      if (!question.text || !question.options || !Array.isArray(question.options) || question.options.length < 2) {
-        return res.status(400).json({ error: "Each question must have text and at least 2 options" });
+      if (
+        !question.text ||
+        !question.options ||
+        !Array.isArray(question.options) ||
+        question.options.length < 2
+      ) {
+        return res.status(400).json({
+          error: "Each question must have text and at least 2 options",
+        });
       }
-      
-      const correctOptions = question.options.filter(opt => opt.correct);
+
+      const correctOptions = question.options.filter((opt) => opt.correct);
       if (correctOptions.length !== 1) {
-        return res.status(400).json({ error: "Each question must have exactly one correct option" });
+        return res.status(400).json({
+          error: "Each question must have exactly one correct option",
+        });
       }
     }
 
@@ -28,14 +44,14 @@ async function createQuiz(req, res) {
       title,
       description,
       questions,
-      isPublic: isPublic !== false, // default to public
+      isPublic: isPublic !== false, // make public by default
       accessPin: isPublic !== false ? null : accessPin,
-      createdBy: req.user.id
+      createdBy: req.user.id,
     });
 
     res.status(201).json({
       success: true,
-      quiz
+      quiz,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -45,16 +61,16 @@ async function createQuiz(req, res) {
 async function getAllQuizzes(req, res) {
   try {
     const { search, createdBy } = req.query;
-    
-    let filter = { isPublic: true }; // Only show public quizzes by default
-    
+
+    let filter = { isPublic: true }; // only show public ones
+
     if (search) {
       filter.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
       ];
     }
-    
+
     if (createdBy) {
       filter.createdBy = createdBy;
       delete filter.isPublic; // Allow viewing private quizzes if filtering by creator
@@ -62,13 +78,13 @@ async function getAllQuizzes(req, res) {
 
     const quizzes = await Quiz.find(filter)
       .populate("createdBy", "name email")
-      .select('-questions.options.correct') // Hide correct answers
+      .select("-questions.options.correct") // Hide correct answers
       .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,
       count: quizzes.length,
-      quizzes
+      quizzes,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -84,7 +100,7 @@ async function getMyQuizzes(req, res) {
     res.status(200).json({
       success: true,
       count: quizzes.length,
-      quizzes
+      quizzes,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -94,29 +110,39 @@ async function getMyQuizzes(req, res) {
 async function getQuizById(req, res) {
   try {
     const { includeAnswers } = req.query;
-    const quiz = await Quiz.findById(req.params.id).populate("createdBy", "name email");
-    
+    const quiz = await Quiz.findById(req.params.id).populate(
+      "createdBy",
+      "name email"
+    );
+
     if (!quiz) {
       return res.status(404).json({ error: "Quiz not found" });
     }
 
-    // Check access for private quizzes
-    if (!quiz.isPublic && quiz.createdBy._id.toString() !== req.user.id) {
-      return res.status(403).json({ error: "Access denied. This is a private quiz." });
+    if (
+      !quiz.isPublic &&
+      (!req.user || quiz.createdBy.toString() !== req.user.id)
+    ) {
+      return res
+        .status(403)
+        .json({ error: "Access denied. This is a private quiz." });
     }
 
     // Hide correct answers unless user is the creator or explicitly requesting answers
     let responseQuiz = quiz.toObject();
-    if (quiz.createdBy._id.toString() !== req.user.id && includeAnswers !== 'true') {
-      responseQuiz.questions = responseQuiz.questions.map(q => ({
+    if (
+      quiz.createdBy._id.toString() !== req.user.id &&
+      includeAnswers !== "true"
+    ) {
+      responseQuiz.questions = responseQuiz.questions.map((q) => ({
         ...q,
-        options: q.options.map(opt => ({ text: opt.text, _id: opt._id }))
+        options: q.options.map((opt) => ({ text: opt.text, _id: opt._id })),
       }));
     }
 
     res.status(200).json({
       success: true,
-      quiz: responseQuiz
+      quiz: responseQuiz,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -126,8 +152,11 @@ async function getQuizById(req, res) {
 async function getQuizForAttempt(req, res) {
   try {
     const { accessPin } = req.body;
-    const quiz = await Quiz.findById(req.params.id).populate("createdBy", "name email");
-    
+    const quiz = await Quiz.findById(req.params.id).populate(
+      "createdBy",
+      "name email"
+    );
+
     if (!quiz) {
       return res.status(404).json({ error: "Quiz not found" });
     }
@@ -141,14 +170,14 @@ async function getQuizForAttempt(req, res) {
 
     // Return quiz without correct answers
     const responseQuiz = quiz.toObject();
-    responseQuiz.questions = responseQuiz.questions.map(q => ({
+    responseQuiz.questions = responseQuiz.questions.map((q) => ({
       ...q,
-      options: q.options.map(opt => ({ text: opt.text, _id: opt._id }))
+      options: q.options.map((opt) => ({ text: opt.text, _id: opt._id })),
     }));
 
     res.status(200).json({
       success: true,
-      quiz: responseQuiz
+      quiz: responseQuiz,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -158,7 +187,7 @@ async function getQuizForAttempt(req, res) {
 async function updateQuiz(req, res) {
   try {
     const quiz = await Quiz.findById(req.params.id);
-    
+
     if (!quiz) {
       return res.status(404).json({ error: "Quiz not found" });
     }
@@ -172,13 +201,22 @@ async function updateQuiz(req, res) {
     if (questions && Array.isArray(questions)) {
       // Validate questions format
       for (let question of questions) {
-        if (!question.text || !question.options || !Array.isArray(question.options) || question.options.length < 2) {
-          return res.status(400).json({ error: "Each question must have text and at least 2 options" });
+        if (
+          !question.text ||
+          !question.options ||
+          !Array.isArray(question.options) ||
+          question.options.length < 2
+        ) {
+          return res.status(400).json({
+            error: "Each question must have text and at least 2 options",
+          });
         }
-        
-        const correctOptions = question.options.filter(opt => opt.correct);
+
+        const correctOptions = question.options.filter((opt) => opt.correct);
         if (correctOptions.length !== 1) {
-          return res.status(400).json({ error: "Each question must have exactly one correct option" });
+          return res.status(400).json({
+            error: "Each question must have exactly one correct option",
+          });
         }
       }
     }
@@ -190,14 +228,16 @@ async function updateQuiz(req, res) {
         ...(description && { description }),
         ...(questions && { questions }),
         ...(isPublic !== undefined && { isPublic }),
-        ...(accessPin !== undefined && { accessPin: isPublic ? null : accessPin })
+        ...(accessPin !== undefined && {
+          accessPin: isPublic ? null : accessPin,
+        }),
       },
       { new: true, runValidators: true }
     ).populate("createdBy", "name email");
 
     res.status(200).json({
       success: true,
-      quiz: updatedQuiz
+      quiz: updatedQuiz,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -207,7 +247,7 @@ async function updateQuiz(req, res) {
 async function deleteQuiz(req, res) {
   try {
     const quiz = await Quiz.findById(req.params.id);
-    
+
     if (!quiz) {
       return res.status(404).json({ error: "Quiz not found" });
     }
@@ -217,10 +257,10 @@ async function deleteQuiz(req, res) {
     }
 
     await Quiz.findByIdAndDelete(req.params.id);
-    
-    res.status(200).json({ 
+
+    res.status(200).json({
       success: true,
-      message: "Quiz deleted successfully" 
+      message: "Quiz deleted successfully",
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -234,5 +274,5 @@ module.exports = {
   getQuizById,
   getQuizForAttempt,
   updateQuiz,
-  deleteQuiz
+  deleteQuiz,
 };

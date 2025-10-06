@@ -17,10 +17,10 @@ async function submitAttempt(req, res) {
 
     // Calculate score
     let score = 0;
-    answers.forEach(answer => {
+    answers.forEach((answer) => {
       const question = quiz.questions.id(answer.questionId);
       if (question) {
-        const correctOption = question.options.find(opt => opt.correct);
+        const correctOption = question.options.find((opt) => opt.correct);
         if (correctOption && correctOption.text === answer.selectedOption) {
           score++;
         }
@@ -31,7 +31,7 @@ async function submitAttempt(req, res) {
       quiz: quizId,
       student: req.user.id,
       answers,
-      score
+      score,
     });
 
     res.status(201).json({ attempt, totalQuestions: quiz.questions.length });
@@ -45,7 +45,7 @@ async function getUserAttempts(req, res) {
     const attempts = await Attempt.find({ student: req.user.id })
       .populate("quiz", "title description")
       .sort({ createdAt: -1 });
-    
+
     res.json(attempts);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -57,14 +57,16 @@ async function getAttemptById(req, res) {
     const attempt = await Attempt.findById(req.params.id)
       .populate("quiz")
       .populate("student", "name email");
-    
+
     if (!attempt) {
       return res.status(404).json({ error: "Attempt not found" });
     }
 
     // Check if user owns this attempt or is the quiz creator
-    if (attempt.student._id.toString() !== req.user.id && 
-        attempt.quiz.createdBy.toString() !== req.user.id) {
+    if (
+      attempt.student._id.toString() !== req.user.id &&
+      attempt.quiz.createdBy.toString() !== req.user.id
+    ) {
       return res.status(403).json({ error: "Access denied" });
     }
 
@@ -77,5 +79,5 @@ async function getAttemptById(req, res) {
 module.exports = {
   submitAttempt,
   getUserAttempts,
-  getAttemptById
+  getAttemptById,
 };

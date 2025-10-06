@@ -1,27 +1,27 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './QuizCreate.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./QuizCreate.css";
 
-const API_BASE = 'http://localhost:3451';
+const API_BASE = "http://localhost:3451";
 
 function QuizCreate({ user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [quiz, setQuiz] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     isPublic: true,
-    accessPin: '',
+    accessPin: "",
     questions: [
       {
-        text: '',
+        text: "",
         options: [
-          { text: '', correct: false },
-          { text: '', correct: false }
-        ]
-      }
-    ]
+          { text: "", correct: false },
+          { text: "", correct: false },
+        ],
+      },
+    ],
   });
 
   const handleQuizChange = (field, value) => {
@@ -32,7 +32,7 @@ function QuizCreate({ user }) {
     const updatedQuestions = [...quiz.questions];
     updatedQuestions[questionIndex] = {
       ...updatedQuestions[questionIndex],
-      [field]: value
+      [field]: value,
     };
     setQuiz({ ...quiz, questions: updatedQuestions });
   };
@@ -41,18 +41,18 @@ function QuizCreate({ user }) {
     const updatedQuestions = [...quiz.questions];
     updatedQuestions[questionIndex].options[optionIndex] = {
       ...updatedQuestions[questionIndex].options[optionIndex],
-      [field]: value
+      [field]: value,
     };
-    
-    // If marking as correct, unmark other options
-    if (field === 'correct' && value) {
+
+    // make sure only one option is correct
+    if (isCorrect) {
       updatedQuestions[questionIndex].options.forEach((option, index) => {
         if (index !== optionIndex) {
           option.correct = false;
         }
       });
     }
-    
+
     setQuiz({ ...quiz, questions: updatedQuestions });
   };
 
@@ -62,13 +62,13 @@ function QuizCreate({ user }) {
       questions: [
         ...quiz.questions,
         {
-          text: '',
+          text: "",
           options: [
-            { text: '', correct: false },
-            { text: '', correct: false }
-          ]
-        }
-      ]
+            { text: "", correct: false },
+            { text: "", correct: false },
+          ],
+        },
+      ],
     });
   };
 
@@ -81,7 +81,7 @@ function QuizCreate({ user }) {
 
   const addOption = (questionIndex) => {
     const updatedQuestions = [...quiz.questions];
-    updatedQuestions[questionIndex].options.push({ text: '', correct: false });
+    updatedQuestions[questionIndex].options.push({ text: "", correct: false });
     setQuiz({ ...quiz, questions: updatedQuestions });
   };
 
@@ -95,25 +95,27 @@ function QuizCreate({ user }) {
 
   const validateQuiz = () => {
     if (!quiz.title.trim()) {
-      setError('Quiz title is required');
+      setError("Quiz title is required");
       return false;
     }
 
     for (let i = 0; i < quiz.questions.length; i++) {
       const question = quiz.questions[i];
-      
+
       if (!question.text.trim()) {
         setError(`Question ${i + 1} text is required`);
         return false;
       }
 
-      const validOptions = question.options.filter(opt => opt.text.trim());
+      const validOptions = question.options.filter((opt) => opt.text.trim());
       if (validOptions.length < 2) {
         setError(`Question ${i + 1} must have at least 2 options`);
         return false;
       }
 
-      const correctOptions = question.options.filter(opt => opt.correct && opt.text.trim());
+      const correctOptions = question.options.filter(
+        (opt) => opt.correct && opt.text.trim()
+      );
       if (correctOptions.length !== 1) {
         setError(`Question ${i + 1} must have exactly one correct answer`);
         return false;
@@ -121,7 +123,7 @@ function QuizCreate({ user }) {
     }
 
     if (!quiz.isPublic && !quiz.accessPin.trim()) {
-      setError('Private quiz requires an access PIN');
+      setError("Private quiz requires an access PIN");
       return false;
     }
 
@@ -130,7 +132,7 @@ function QuizCreate({ user }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!validateQuiz()) {
       return;
@@ -141,32 +143,32 @@ function QuizCreate({ user }) {
     try {
       const quizData = {
         ...quiz,
-        questions: quiz.questions.map(q => ({
+        questions: quiz.questions.map((q) => ({
           ...q,
-          options: q.options.filter(opt => opt.text.trim())
-        }))
+          options: q.options.filter((opt) => opt.text.trim()),
+        })),
       };
 
       const response = await fetch(`${API_BASE}/quizzes`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        credentials: 'include',
+        credentials: "include",
         body: JSON.stringify(quizData),
       });
 
       if (response.ok) {
         const data = await response.json();
-        navigate(`/quiz/${data.quiz._id}`, {
-          state: { message: 'Quiz created successfully!' }
+        navigate("/dashboard", {
+          state: { message: "Quiz created successfully!" },
         });
       } else {
         const data = await response.json();
-        setError(data.error || 'Failed to create quiz');
+        setError(data.error || "Failed to create quiz");
       }
     } catch (error) {
-      setError('Network error');
+      setError("Network error");
     } finally {
       setLoading(false);
     }
@@ -177,8 +179,8 @@ function QuizCreate({ user }) {
   }
 
   return (
-    <div className="quiz-create">
-      <div className="quiz-create-header">
+    <div className="page-container">
+      <div className="page-header">
         <h1>Create New Quiz</h1>
         <p>Build an engaging quiz for others to take</p>
       </div>
@@ -192,7 +194,7 @@ function QuizCreate({ user }) {
             <input
               type="text"
               value={quiz.title}
-              onChange={(e) => handleQuizChange('title', e.target.value)}
+              onChange={(e) => handleQuizChange("title", e.target.value)}
               placeholder="Enter quiz title"
               required
             />
@@ -202,7 +204,7 @@ function QuizCreate({ user }) {
             <label>Description</label>
             <textarea
               value={quiz.description}
-              onChange={(e) => handleQuizChange('description', e.target.value)}
+              onChange={(e) => handleQuizChange("description", e.target.value)}
               placeholder="Brief description of your quiz"
               rows="3"
             />
@@ -213,7 +215,7 @@ function QuizCreate({ user }) {
               <input
                 type="checkbox"
                 checked={quiz.isPublic}
-                onChange={(e) => handleQuizChange('isPublic', e.target.checked)}
+                onChange={(e) => handleQuizChange("isPublic", e.target.checked)}
               />
               Public Quiz (anyone can take it)
             </label>
@@ -225,7 +227,7 @@ function QuizCreate({ user }) {
               <input
                 type="text"
                 value={quiz.accessPin}
-                onChange={(e) => handleQuizChange('accessPin', e.target.value)}
+                onChange={(e) => handleQuizChange("accessPin", e.target.value)}
                 placeholder="Enter PIN for private access"
                 required
               />
@@ -235,7 +237,7 @@ function QuizCreate({ user }) {
 
         <div className="questions-section">
           <h2>Questions</h2>
-          
+
           {quiz.questions.map((question, questionIndex) => (
             <div key={questionIndex} className="question-builder">
               <div className="question-header">
@@ -256,7 +258,9 @@ function QuizCreate({ user }) {
                 <input
                   type="text"
                   value={question.text}
-                  onChange={(e) => handleQuestionChange(questionIndex, 'text', e.target.value)}
+                  onChange={(e) =>
+                    handleQuestionChange(questionIndex, "text", e.target.value)
+                  }
                   placeholder="Enter your question"
                   required
                 />
@@ -269,7 +273,14 @@ function QuizCreate({ user }) {
                     <input
                       type="text"
                       value={option.text}
-                      onChange={(e) => handleOptionChange(questionIndex, optionIndex, 'text', e.target.value)}
+                      onChange={(e) =>
+                        handleOptionChange(
+                          questionIndex,
+                          optionIndex,
+                          "text",
+                          e.target.value
+                        )
+                      }
                       placeholder={`Option ${optionIndex + 1}`}
                     />
                     <label className="correct-label">
@@ -277,7 +288,14 @@ function QuizCreate({ user }) {
                         type="radio"
                         name={`correct-${questionIndex}`}
                         checked={option.correct}
-                        onChange={(e) => handleOptionChange(questionIndex, optionIndex, 'correct', e.target.checked)}
+                        onChange={(e) =>
+                          handleOptionChange(
+                            questionIndex,
+                            optionIndex,
+                            "correct",
+                            e.target.checked
+                          )
+                        }
                       />
                       Correct
                     </label>
@@ -292,7 +310,7 @@ function QuizCreate({ user }) {
                     )}
                   </div>
                 ))}
-                
+
                 <button
                   type="button"
                   onClick={() => addOption(questionIndex)}
@@ -316,17 +334,13 @@ function QuizCreate({ user }) {
         <div className="form-actions">
           <button
             type="button"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate("/dashboard")}
             className="btn btn-secondary"
           >
             Cancel
           </button>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading}
-          >
-            {loading ? 'Creating Quiz...' : 'Create Quiz'}
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Creating Quiz..." : "Create Quiz"}
           </button>
         </div>
       </form>

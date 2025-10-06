@@ -14,11 +14,13 @@ A comprehensive RESTful API for a quiz application built with Node.js, Express, 
 ## API Endpoints
 
 ### Authentication
+
 - `POST /register` - Register a new user
 - `POST /login` - Login user
 - `POST /logout` - Logout user
 
 ### Quizzes
+
 - `GET /quizzes/public` - Get all public quizzes
 - `POST /quizzes/:id/access` - Access quiz (with PIN for private quizzes)
 - `POST /quizzes` - Create a new quiz (protected)
@@ -28,28 +30,33 @@ A comprehensive RESTful API for a quiz application built with Node.js, Express, 
 - `DELETE /quizzes/:id` - Delete quiz (protected)
 
 ### Attempts
+
 - `POST /attempts/submit` - Submit quiz attempt (protected)
 - `GET /attempts/my-attempts` - Get user's attempts (protected)
 - `GET /attempts/:id` - Get attempt details (protected)
 - `GET /attempts/quiz/:quizId` - Get attempts for a quiz (protected)
 
 ### Users
+
 - `GET /users/profile` - Get user profile (protected)
 - `PUT /users/profile` - Update user profile (protected)
 - `GET /users/dashboard` - Get dashboard data (protected)
 
 ### Test
+
 - `GET /api/test` - Test endpoint to verify server is running
 - MongoDB data persistence
 
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Set up environment variables in `.env`:
+
 ```
 PORT=3451
 MONGO_URI=mongodb://127.0.0.1:27017/quizapp
@@ -59,6 +66,7 @@ JWT_SECRET=your_jwt_secret_here
 3. Start MongoDB locally
 
 4. Run the server:
+
 ```bash
 # Development (with auto-restart)
 nodemon index.js
@@ -70,11 +78,13 @@ npm start
 ## API Endpoints
 
 ### Authentication
+
 - `POST /register` - Register a new user
 - `POST /login` - Login user
 - `POST /logout` - Logout user
 
 ### Quizzes (Protected)
+
 - `POST /quizzes/createquiz` - Create a new quiz
 - `GET /quizzes/getquiz` - Get all quizzes
 - `GET /quizzes/public` - Get public quizzes only
@@ -83,11 +93,13 @@ npm start
 - `DELETE /quizzes/deletequiz/:id` - Delete quiz (owner only)
 
 ### Attempts (Protected)
+
 - `POST /attempts/submit` - Submit quiz attempt
 - `GET /attempts/my-attempts` - Get user's attempts
 - `GET /attempts/:id` - Get specific attempt
 
 ### Test
+
 - `GET /api/test` - Test endpoint to verify server is running
 
 ## Authentication
@@ -101,11 +113,13 @@ Authorization: Bearer <jwt_token>
 ## Database Models
 
 ### User
+
 - name (String)
 - email (String, required, unique)
 - password (String, required, hashed)
 
 ### Quiz
+
 - title (String)
 - description (String)
 - questions (Array of objects with text and options)
@@ -114,6 +128,7 @@ Authorization: Bearer <jwt_token>
 - createdBy (ObjectId, ref to User)
 
 ### Attempt
+
 - quiz (ObjectId, ref to Quiz)
 - student (ObjectId, ref to User)
 - answers (Array of answer objects)

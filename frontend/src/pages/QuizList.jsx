@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './QuizList.css';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./QuizList.css";
 
-const API_BASE = 'http://localhost:3451';
+const API_BASE = "http://localhost:3451";
 
 function QuizList({ user }) {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchQuizzes();
@@ -17,30 +17,31 @@ function QuizList({ user }) {
   const fetchQuizzes = async () => {
     try {
       const response = await fetch(`${API_BASE}/quizzes/public`);
-      
+
       if (response.ok) {
         const data = await response.json();
         setQuizzes(data.quizzes || []);
       } else {
-        setError('Failed to load quizzes');
+        setError("Failed to load quizzes");
       }
     } catch (error) {
-      setError('Network error');
+      setError("Network error");
     } finally {
       setLoading(false);
     }
   };
 
-  const filteredQuizzes = quizzes.filter(quiz =>
-    quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    quiz.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredQuizzes = quizzes.filter(
+    (quiz) =>
+      quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      quiz.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) return <div className="loading">Loading quizzes...</div>;
 
   return (
-    <div className="quiz-list-page">
-      <div className="quiz-list-header">
+    <div className="page-container">
+      <div className="page-header">
         <h1>Browse Quizzes</h1>
         <div className="search-bar">
           <input
@@ -59,10 +60,9 @@ function QuizList({ user }) {
         <div className="empty-state">
           <h2>No quizzes found</h2>
           <p>
-            {searchTerm ? 
-              `No quizzes match "${searchTerm}"` : 
-              'No public quizzes available yet.'
-            }
+            {searchTerm
+              ? `No quizzes match "${searchTerm}"`
+              : "No public quizzes available yet."}
           </p>
           {user && (
             <Link to="/create-quiz" className="btn btn-primary">
@@ -72,7 +72,7 @@ function QuizList({ user }) {
         </div>
       ) : (
         <div className="quizzes-grid">
-          {filteredQuizzes.map(quiz => (
+          {filteredQuizzes.map((quiz) => (
             <div key={quiz._id} className="quiz-card">
               <div className="quiz-card-header">
                 <h3>{quiz.title}</h3>
@@ -80,40 +80,34 @@ function QuizList({ user }) {
                   {quiz.questions?.length || 0} questions
                 </span>
               </div>
-              
+
               <p className="quiz-description">
-                {quiz.description || 'No description available'}
+                {quiz.description || "No description available"}
               </p>
-              
+
               <div className="quiz-meta">
                 <span className="quiz-author">
-                  By: {quiz.createdBy?.name || 'Unknown'}
+                  By: {quiz.createdBy?.name || "Unknown"}
                 </span>
                 <span className="quiz-date">
                   {new Date(quiz.createdAt).toLocaleDateString()}
                 </span>
               </div>
-              
+
               <div className="quiz-actions">
                 {user ? (
-                  <Link 
-                    to={`/quiz/${quiz._id}`} 
-                    className="btn btn-primary"
-                  >
+                  <Link to={`/quiz/${quiz._id}`} className="btn btn-primary">
                     Take Quiz
                   </Link>
                 ) : (
-                  <Link 
-                    to="/login" 
-                    className="btn btn-primary"
-                  >
+                  <Link to="/login" className="btn btn-primary">
                     Login to Take Quiz
                   </Link>
                 )}
-                
+
                 {user && quiz.createdBy?._id === user.id && (
-                  <Link 
-                    to={`/edit-quiz/${quiz._id}`} 
+                  <Link
+                    to={`/edit-quiz/${quiz._id}`}
                     className="btn btn-secondary"
                   >
                     Edit
