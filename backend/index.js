@@ -4,6 +4,9 @@ const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
 
 const { register, login, logout } = require("./controllers/authcontroller.js");
+const quizRoutes = require("./routes/quizroutes.js");
+
+app.use("/quizzes", quizRoutes);
 
 dotenv.config();
 connectDB();
@@ -17,5 +20,5 @@ app.get("/register",register)
 app.get("/login",login)
 app.get("/logout",logout)
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3040;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
