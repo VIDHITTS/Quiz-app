@@ -1,35 +1,153 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import './App.css';
+
+// Components
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import QuizList from './pages/QuizList';
+import QuizCreate from './pages/QuizCreate';
+import QuizTake from './pages/QuizTake';
+import QuizEdit from './pages/QuizEdit';
+import Profile from './pages/Profile';
+
+// API Base URL
+const API_BASE = 'http://localhost:3451';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check if user is logged in on app start
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/users/profile`, {
+        credentials: 'include' // Include cookies
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.log('Not authenticated');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login = async (email, password) => {
+    try {
+      const response = await fetch(`${API_BASE}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        await checkAuth(); // Refresh user data
+        return { success: true };
+      } else {
+        const data = await response.json();
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      return { success: false, error: 'Network error' };
+    }
+  };
+
+  const register = async (name, email, password) => {
+    try {
+      const response = await fetch(`${API_BASE}/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      if (response.ok) {
+        await checkAuth(); // Refresh user data
+        return { success: true };
+      } else {
+        const data = await response.json();
+        return { success: false, error: data.error };
+      }
+    } catch (error) {
+      return { success: false, error: 'Network error' };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await fetch(`${API_BASE}/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="App">
+        <Navbar user={user} logout={logout} />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route 
+              path="/login" 
+              element={user ? <Navigate to="/dashboard" /> : <Login login={login} />} 
+            />
+            <Route 
+              path="/register" 
+              element={user ? <Navigate to="/dashboard" /> : <Register register={register} />} 
+            />
+            <Route 
+              path="/dashboard" 
+              element={user ? <Dashboard user={user} /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/quizzes" 
+              element={<QuizList user={user} />} 
+            />
+            <Route 
+              path="/create-quiz" 
+              element={user ? <QuizCreate user={user} /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/quiz/:id" 
+              element={<QuizTake user={user} />} 
+            />
+            <Route 
+              path="/edit-quiz/:id" 
+              element={user ? <QuizEdit user={user} /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/profile" 
+              element={user ? <Profile user={user} /> : <Navigate to="/login" />} 
+            />
+          </Routes>
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+  );
 }
 
-export default App
+export default App;
