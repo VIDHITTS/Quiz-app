@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import './QuizTake.css';
 
 const API_BASE = 'http://localhost:3451';
 
@@ -40,6 +41,32 @@ function QuizTake({ user }) {
       setError('Network error');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePinSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch(`${API_BASE}/quizzes/${id}/access`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ accessPin: pin }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setQuiz(data.quiz);
+        setShowPin(false);
+      } else {
+        setError('Incorrect PIN');
+      }
+    } catch (error) {
+      setError('Network error');
     }
   };
 
@@ -91,25 +118,29 @@ function QuizTake({ user }) {
     }
   };
 
+  // Calculate progress
+  const answeredQuestions = Object.keys(answers).length;
+  const totalQuestions = quiz?.questions?.length || 0;
+  const progress = totalQuestions > 0 ? (answeredQuestions / totalQuestions) * 100 : 0;
+
   if (!user) return null;
   if (loading) return <div className="loading">Loading quiz...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (error && !showPin) return <div className="error">{error}</div>;
 
   if (showPin) {
     return (
-      <div className="quiz-container">
+      <div className="quiz-take">
         <div className="pin-form">
           <h2>Private Quiz</h2>
           <p>This quiz requires a PIN to access.</p>
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            // TODO: Handle PIN verification
-          }}>
+          {error && <div className="error">{error}</div>}
+          <form onSubmit={handlePinSubmit}>
             <input
               type="text"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               placeholder="Enter PIN"
+              maxLength="10"
               required
             />
             <button type="submit" className="btn btn-primary">
@@ -122,11 +153,25 @@ function QuizTake({ user }) {
   }
 
   return (
-    <div className="quiz-container">
+    <div className="quiz-take">
       <div className="quiz-header">
         <h1>{quiz.title}</h1>
         <p>{quiz.description}</p>
       </div>
+
+      {totalQuestions > 0 && (
+        <div className="quiz-progress">
+          <div className="progress-text">
+            Progress: {answeredQuestions} of {totalQuestions} questions answered
+          </div>
+          <div className="progress-bar">
+            <div 
+              className="progress-fill" 
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="quiz-form">
         {quiz.questions.map((question, index) => (
@@ -144,7 +189,7 @@ function QuizTake({ user }) {
                     onChange={() => handleAnswerChange(question._id, option.text)}
                     required
                   />
-                  {option.text}
+                  <span>{option.text}</span>
                 </label>
               ))}
             </div>
@@ -154,9 +199,9 @@ function QuizTake({ user }) {
         <button 
           type="submit" 
           className="btn btn-primary btn-large"
-          disabled={submitting}
+          disabled={submitting || answeredQuestions < totalQuestions}
         >
-          {submitting ? 'Submitting...' : 'Submit Quiz'}
+          {submitting ? 'Submitting...' : `Submit Quiz (${answeredQuestions}/${totalQuestions})`}
         </button>
       </form>
     </div>
