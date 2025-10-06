@@ -61,9 +61,29 @@ async function deleteQuiz(req, res) {
   }
 }
 
+async function getPublicQuizzes(req, res) {
+  try {
+    const quizzes = await Quiz.find({ isPublic: true }).populate("createdBy", "name email");
+    res.status(200).json(quizzes);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching public quizzes", error: err.message });
+  }
+}
+
+async function getMyQuizzes(req, res) {
+  try {
+    const quizzes = await Quiz.find({ createdBy: req.user.id }).populate("createdBy", "name email");
+    res.status(200).json(quizzes);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching your quizzes", error: err.message });
+  }
+}
+
 module.exports = {
   createQuiz,
   getAllQuizzes,
+  getPublicQuizzes,
+  getMyQuizzes,
   getQuizById,
   deleteQuiz
 };

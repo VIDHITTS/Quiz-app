@@ -27,6 +27,11 @@ app.post('/register', register);
 app.post('/login', login);
 app.post('/logout', logout);
 
+// simple test route
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Backend is working!', timestamp: new Date().toISOString() });
+});
+
 // quiz routes
 app.use('/quizzes', quizRoutes);
 app.use('/attempts', attemptRoutes);
