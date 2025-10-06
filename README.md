@@ -283,17 +283,6 @@ Make sure MongoDB is running on your system. The application will automatically 
 
 This project is open source and available under the MIT License.
 
-## Future Enhancements
-
-- Timer-based quizzes
-- Image/media support in questions
-- Quiz categories and tags
-- Advanced analytics and reporting
-- Social sharing features
-- Quiz templates and import/export
-- Real-time multiplayer quizzes
-- Mobile app development
-
 ## Support
 
 For issues, questions, or contributions, please open an issue in the repository or contact the development team.
