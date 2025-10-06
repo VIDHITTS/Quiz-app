@@ -1,24 +1,31 @@
-const Quiz = require("../models/quizModel.js");
+const Quiz = require("../models/quiz.js");
 
 async function createQuiz(req, res) {
   try {
-    const { title, description, questions } = req.body;
-    if (!title || !questions || questions.length === 0)
-      return res.status(400).json({ message: "Title and questions required" });
+    const { title, description, questions, isPublic, accessPin } = req.body;
 
-    const quiz = new Quiz({
+    if (!title || !questions) {
+      return res.status(400).json({ error: "Title and questions required" });
+    }
+
+    if (!isPublic && !accessPin) {
+      return res.status(400).json({ error: "Private quiz requires a PIN" });
+    }
+
+    const quiz = await Quiz.create({
       title,
       description,
       questions,
-      createdBy: req.user.id
+      isPublic,
+      accessPin: isPublic ? null : accessPin,
+      createdBy: req.user._id
     });
 
-    await quiz.save();
-    res.status(201).json({ message: "Quiz created successfully", quiz });
+    res.status(201).json(quiz);
   } catch (err) {
-    res.status(500).json({ message: "Error creating quiz", error: err.message });
+    res.status(500).json({ error: err.message });
   }
-}
+};
 
 async function getAllQuizzes(req, res) {
   try {
