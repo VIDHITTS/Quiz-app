@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const { register, login, logout } = require('./controllers/authcontroller.js');
 const quizRoutes = require('./routes/quizroutes.js');
 const attemptRoutes = require('./routes/attemptroutes.js');
+const userRoutes = require('./routes/userroutes.js');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.get('/api/test', (req, res) => {
 // quiz routes
 app.use('/quizzes', quizRoutes);
 app.use('/attempts', attemptRoutes);
+app.use('/users', userRoutes);
 
 const PORT = process.env.PORT || 3040;
 
