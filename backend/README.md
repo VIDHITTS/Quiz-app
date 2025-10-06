@@ -1,13 +1,45 @@
 # Quiz App Backend
 
-A Node.js/Express backend for a quiz application with user authentication, quiz creation, and attempt tracking.
+A comprehensive RESTful API for a quiz application built with Node.js, Express, and MongoDB.
 
 ## Features
 
-- User authentication (register, login, logout) with JWT tokens
-- Quiz creation and management
-- Quiz attempts with automatic scoring
-- Protected routes with authentication middleware
+- **User Authentication**: Register, login, logout with JWT tokens
+- **Quiz Management**: Create, read, update, delete quizzes
+- **Quiz Attempts**: Submit answers and track scores
+- **User Profiles**: View and update user information
+- **Access Control**: Public and private quizzes with PIN protection
+- **Dashboard**: User statistics and recent activity
+
+## API Endpoints
+
+### Authentication
+- `POST /register` - Register a new user
+- `POST /login` - Login user
+- `POST /logout` - Logout user
+
+### Quizzes
+- `GET /quizzes/public` - Get all public quizzes
+- `POST /quizzes/:id/access` - Access quiz (with PIN for private quizzes)
+- `POST /quizzes` - Create a new quiz (protected)
+- `GET /quizzes/my-quizzes` - Get user's quizzes (protected)
+- `GET /quizzes/:id` - Get quiz by ID (protected)
+- `PUT /quizzes/:id` - Update quiz (protected)
+- `DELETE /quizzes/:id` - Delete quiz (protected)
+
+### Attempts
+- `POST /attempts/submit` - Submit quiz attempt (protected)
+- `GET /attempts/my-attempts` - Get user's attempts (protected)
+- `GET /attempts/:id` - Get attempt details (protected)
+- `GET /attempts/quiz/:quizId` - Get attempts for a quiz (protected)
+
+### Users
+- `GET /users/profile` - Get user profile (protected)
+- `PUT /users/profile` - Update user profile (protected)
+- `GET /users/dashboard` - Get dashboard data (protected)
+
+### Test
+- `GET /api/test` - Test endpoint to verify server is running
 - MongoDB data persistence
 
 ## Setup
