@@ -184,16 +184,16 @@ function QuizCreate({ user }) {
     const quizLink = `${FRONTEND_BASE}/quiz/${createdQuizId}`;
     try {
       await navigator.clipboard.writeText(quizLink);
-      alert('Quiz link copied to clipboard!');
+      alert("Quiz link copied to clipboard!");
     } catch (err) {
       // fallback for older browsers
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = quizLink;
       document.body.appendChild(textArea);
       textArea.select();
-      document.execCommand('copy');
+      document.execCommand("copy");
       document.body.removeChild(textArea);
-      alert('Quiz link copied to clipboard!');
+      alert("Quiz link copied to clipboard!");
     }
   };
 
@@ -381,13 +381,13 @@ function QuizCreate({ user }) {
               <div className="quiz-link-section">
                 <label>Share this link:</label>
                 <div className="link-display">
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     value={`${FRONTEND_BASE}/quiz/${createdQuizId}`}
                     readOnly
                     className="quiz-link-input"
                   />
-                  <button 
+                  <button
                     type="button"
                     onClick={copyQuizLink}
                     className="btn btn-primary copy-btn"
@@ -398,14 +398,14 @@ function QuizCreate({ user }) {
               </div>
             </div>
             <div className="modal-actions">
-              <button 
+              <button
                 type="button"
                 onClick={closeModalAndRedirect}
                 className="btn btn-outline"
               >
                 Go to Dashboard
               </button>
-              <button 
+              <button
                 type="button"
                 onClick={() => navigate(`/quiz/${createdQuizId}`)}
                 className="btn btn-primary"

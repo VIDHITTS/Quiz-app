@@ -312,12 +312,12 @@
   .trending-section h2 {
     font-size: 2rem;
   }
-  
+
   .trending-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .trending-quiz-card {
     padding: 20px;
   }

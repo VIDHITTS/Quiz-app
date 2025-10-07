@@ -140,7 +140,9 @@ function QuizTake({ user }) {
         <div className="pin-form">
           <h2>🔒 Protected Quiz</h2>
           <p>This quiz is private and requires an access code.</p>
-          <p className="pin-hint">Ask the quiz creator for the PIN to continue.</p>
+          <p className="pin-hint">
+            Ask the quiz creator for the PIN to continue.
+          </p>
           {error && <div className="error">{error}</div>}
           <form onSubmit={handlePinSubmit}>
             <input

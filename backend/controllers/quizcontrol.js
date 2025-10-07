@@ -274,66 +274,75 @@ async function getTrendingQuizzes(req, res) {
     const trendingQuizzes = await Quiz.aggregate([
       {
         // Only public quizzes
-        $match: { isPublic: true }
+        $match: { isPublic: true },
       },
       {
         // Add attempt count from attempts collection
         $lookup: {
-          from: 'attempts',
-          localField: '_id',
-          foreignField: 'quiz',
-          as: 'attempts'
-        }
+          from: "attempts",
+          localField: "_id",
+          foreignField: "quiz",
+          as: "attempts",
+        },
       },
       {
         // Add calculated fields
         $addFields: {
-          attemptCount: { $size: '$attempts' },
+          attemptCount: { $size: "$attempts" },
           recentAttempts: {
             $size: {
               $filter: {
-                input: '$attempts',
+                input: "$attempts",
                 cond: {
-                  $gte: ['$$this.createdAt', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)] // Last 7 days
-                }
-              }
-            }
+                  $gte: [
+                    "$$this.createdAt",
+                    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                  ], // Last 7 days
+                },
+              },
+            },
           },
           trendingScore: {
             $add: [
-              { $multiply: [{ $size: '$attempts' }, 1] }, // Total attempts weight
-              { $multiply: [
-                {
-                  $size: {
-                    $filter: {
-                      input: '$attempts',
-                      cond: {
-                        $gte: ['$$this.createdAt', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)]
-                      }
-                    }
-                  }
-                }, 3] // Recent attempts weight (3x multiplier)
-              }
-            ]
-          }
-        }
+              { $multiply: [{ $size: "$attempts" }, 1] }, // Total attempts weight
+              {
+                $multiply: [
+                  {
+                    $size: {
+                      $filter: {
+                        input: "$attempts",
+                        cond: {
+                          $gte: [
+                            "$$this.createdAt",
+                            new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                          ],
+                        },
+                      },
+                    },
+                  },
+                  3,
+                ], // Recent attempts weight (3x multiplier)
+              },
+            ],
+          },
+        },
       },
       {
         // Remove attempts array and sensitive data
         $project: {
           attempts: 0,
-          'questions.options.correct': 0,
-          accessPin: 0
-        }
+          "questions.options.correct": 0,
+          accessPin: 0,
+        },
       },
       {
         // Populate creator info
         $lookup: {
-          from: 'users',
-          localField: 'createdBy',
-          foreignField: '_id',
-          as: 'createdBy'
-        }
+          from: "users",
+          localField: "createdBy",
+          foreignField: "_id",
+          as: "createdBy",
+        },
       },
       {
         // Format creator info
@@ -342,28 +351,28 @@ async function getTrendingQuizzes(req, res) {
             $arrayElemAt: [
               {
                 $map: {
-                  input: '$createdBy',
-                  as: 'user',
+                  input: "$createdBy",
+                  as: "user",
                   in: {
-                    _id: '$$user._id',
-                    name: '$$user.name',
-                    email: '$$user.email'
-                  }
-                }
+                    _id: "$$user._id",
+                    name: "$$user.name",
+                    email: "$$user.email",
+                  },
+                },
               },
-              0
-            ]
-          }
-        }
+              0,
+            ],
+          },
+        },
       },
       {
         // Sort by trending score (highest first)
-        $sort: { trendingScore: -1, createdAt: -1 }
+        $sort: { trendingScore: -1, createdAt: -1 },
       },
       {
         // Limit results
-        $limit: limit
-      }
+        $limit: limit,
+      },
     ]);
 
     res.status(200).json({

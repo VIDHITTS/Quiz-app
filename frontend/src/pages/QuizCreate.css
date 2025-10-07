@@ -318,15 +318,15 @@
     margin: 1rem;
     padding: 1.5rem;
   }
-  
+
   .link-display {
     flex-direction: column;
   }
-  
+
   .modal-actions {
     flex-direction: column;
   }
-  
+
   .modal-actions .btn {
     max-width: none;
   }

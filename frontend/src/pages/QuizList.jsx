@@ -81,14 +81,10 @@ function QuizList({ user }) {
                     {quiz.questions?.length || 0} questions
                   </span>
                   {!quiz.isPublic && (
-                    <span className="privacy-badge private">
-                      🔒 Private
-                    </span>
+                    <span className="privacy-badge private">🔒 Private</span>
                   )}
                   {quiz.isPublic && (
-                    <span className="privacy-badge public">
-                      🌍 Public
-                    </span>
+                    <span className="privacy-badge public">🌍 Public</span>
                   )}
                 </div>
               </div>

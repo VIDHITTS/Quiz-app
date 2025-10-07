@@ -16,7 +16,7 @@ function Home({ user }) {
     try {
       const response = await fetch(`${API_BASE}/quizzes/trending?limit=6`);
       const data = await response.json();
-      
+
       if (data.success) {
         setTrendingQuizzes(data.data);
       }
@@ -78,8 +78,8 @@ function Home({ user }) {
                 <div className="quiz-creator">
                   By: {quiz.createdBy?.name || "Anonymous"}
                 </div>
-                <Link 
-                  to={`/quiz/${quiz._id}`} 
+                <Link
+                  to={`/quiz/${quiz._id}`}
                   className="btn btn-primary btn-small"
                 >
                   Try Quiz
@@ -89,7 +89,9 @@ function Home({ user }) {
           </div>
         ) : (
           <div className="no-quizzes-message">
-            <p>No trending quizzes available yet. Be the first to create one!</p>
+            <p>
+              No trending quizzes available yet. Be the first to create one!
+            </p>
             <Link to="/create-quiz" className="btn btn-primary">
               Create Quiz
             </Link>

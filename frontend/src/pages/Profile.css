@@ -148,7 +148,7 @@
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   .profile-avatar {
     border-right: none;
     border-bottom: 2px solid #ecf0f1;
