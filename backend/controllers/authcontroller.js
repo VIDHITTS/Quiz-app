@@ -22,10 +22,12 @@ async function register(req, res) {
       expiresIn: "7d",
     });
     
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+    
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // Always true for Railway deployment
-      sameSite: "none", // Required for cross-origin cookies
+      secure: isProduction, // Only secure in production
+      sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -56,10 +58,12 @@ async function login(req, res) {
       expiresIn: "7d", // Match register expiry
     });
 
+    const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // Always true for Railway deployment
-      sameSite: "none", // Required for cross-origin cookies
+      secure: isProduction, // Only secure in production
+      sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days - match register
     });
 
@@ -74,10 +78,12 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
+  const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+  
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true, // Always true for Railway deployment
-    sameSite: "none" // Required for cross-origin cookies
+    secure: isProduction, // Only secure in production
+    sameSite: isProduction ? "none" : "lax" // none for cross-origin, lax for localhost
   }).json({ success: true, message: "Logged out successfully" });
 }
 
