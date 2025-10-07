@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import config from "../config";
 import "./Profile.css";
 
-const API_BASE = "http://localhost:3451";
+const API_BASE = config.API_BASE;
 
 function Profile({ user }) {
   const [profile, setProfile] = useState(null);

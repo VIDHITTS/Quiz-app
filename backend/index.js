@@ -3,6 +3,13 @@ const dotenv = require("dotenv");
 // need env variables
 dotenv.config();
 
+// Environment detection for Railway deployment
+if (!process.env.NODE_ENV && process.env.RAILWAY_ENVIRONMENT) {
+  process.env.NODE_ENV = 'production';
+}
+
+console.log('Environment:', process.env.NODE_ENV);
+
 const express = require("express");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
@@ -18,10 +25,20 @@ const app = express();
 // allow frontend to connect
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://quiz-app-beta-pearl.vercel.app"], // Allow both possible frontend ports
+    origin: [
+      "http://localhost:5173", 
+      "http://localhost:5174",
+      "https://quiz-app-beta-pearl.vercel.app"
+    ],
     credentials: true, // Allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
   })
 );
+
+// Handle preflight requests explicitly
+app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import config from "../config";
 import "./QuizList.css";
 
-const API_BASE = "http://localhost:3451";
+const API_BASE = config.API_BASE;
 
 function QuizList({ user }) {
   const [quizzes, setQuizzes] = useState([]);

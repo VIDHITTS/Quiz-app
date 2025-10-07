@@ -5,6 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
+import config from "./config";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -18,7 +19,7 @@ import QuizTake from "./pages/QuizTake";
 import QuizEdit from "./pages/QuizEdit";
 import Profile from "./pages/Profile";
 
-const API_BASE = "https://quiz-app-production-13bd.up.railway.app";
+const API_BASE = config.API_BASE;
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,15 +31,25 @@ function App() {
 
   const checkAuth = async () => {
     try {
+      console.log('Checking authentication...');
       const response = await fetch(`${API_BASE}/users/profile`, {
         credentials: "include",
       });
+      
       if (response.ok) {
         const data = await response.json();
-        setUser(data.user);
+        console.log('Auth check response:', data);
+        if (data.success && data.user) {
+          setUser(data.user);
+        }
+      } else {
+        console.log('Auth check failed with status:', response.status);
+        // Clear any existing user data if auth check fails
+        setUser(null);
       }
     } catch (error) {
-      console.log("Not authenticated");
+      console.log("Auth check failed:", error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -46,6 +57,7 @@ function App() {
 
   const login = async (email, password) => {
     try {
+      console.log('Attempting login to:', `${API_BASE}/login`);
       const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: {
@@ -55,20 +67,30 @@ function App() {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+      console.log('Login response:', { status: response.status, data });
+
       if (response.ok) {
-        await checkAuth(); // get user data again
+        // Set user data immediately if available in response
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          // Fallback: fetch user profile
+          await checkAuth();
+        }
         return { success: true };
       } else {
-        const data = await response.json();
-        return { success: false, error: data.error };
+        return { success: false, error: data.error || "Login failed" };
       }
     } catch (error) {
+      console.error("Login error:", error);
       return { success: false, error: "Network error" };
     }
   };
 
   const register = async (name, email, password) => {
     try {
+      console.log('Attempting registration to:', `${API_BASE}/register`);
       const response = await fetch(`${API_BASE}/register`, {
         method: "POST",
         headers: {
@@ -78,14 +100,23 @@ function App() {
         body: JSON.stringify({ name, email, password }),
       });
 
+      const data = await response.json();
+      console.log('Registration response:', { status: response.status, data });
+
       if (response.ok) {
-        await checkAuth(); // get user data again
+        // Set user data immediately from response
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          // Fallback: fetch user profile
+          await checkAuth();
+        }
         return { success: true };
       } else {
-        const data = await response.json();
-        return { success: false, error: data.error };
+        return { success: false, error: data.error || "Registration failed" };
       }
     } catch (error) {
+      console.error("Registration error:", error);
       return { success: false, error: "Network error" };
     }
   };

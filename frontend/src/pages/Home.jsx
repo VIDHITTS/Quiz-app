@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import config from "../config";
 import "./Home.css";
 
-const API_BASE = "http://localhost:3451";
+const API_BASE = config.API_BASE;
 
 function Home({ user }) {
   const [trendingQuizzes, setTrendingQuizzes] = useState([]);

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import config from "../config";
 import "./QuizCreate.css";
 
-const API_BASE = "http://localhost:3451";
+const API_BASE = config.API_BASE;
 
 function QuizEdit({ user }) {
   const { id } = useParams();

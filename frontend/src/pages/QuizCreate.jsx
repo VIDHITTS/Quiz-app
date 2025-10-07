@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import config from "../config";
 import "./QuizCreate.css";
 
-const API_BASE = "http://localhost:3451";
-const FRONTEND_BASE = "http://localhost:5174";
+const API_BASE = config.API_BASE;
+const FRONTEND_BASE = window.location.origin;
 
 function QuizCreate({ user }) {
   const navigate = useNavigate();
