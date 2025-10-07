@@ -4,7 +4,7 @@ const {
   getUserAttempts,
   getAttemptById,
   getQuizAttempts,
-} = require("../controllers/attemptcontroller.js");
+} = require("../controllers/attemptController.js");
 const protect = require("../middleware/authmiddleware.js");
 
 const router = express.Router();
