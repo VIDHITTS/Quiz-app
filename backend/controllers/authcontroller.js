@@ -23,12 +23,22 @@ async function register(req, res) {
     });
     
     const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+    console.log('Register - Environment check:', {
+      NODE_ENV: process.env.NODE_ENV,
+      RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT,
+      isProduction: isProduction
+    });
     
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction, // Only secure in production
       sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+    
+    console.log('Register - Cookie settings:', {
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax"
     });
 
     res.status(201).json({
@@ -59,12 +69,22 @@ async function login(req, res) {
     });
 
     const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+    console.log('Login - Environment check:', {
+      NODE_ENV: process.env.NODE_ENV,
+      RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT,
+      isProduction: isProduction
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction, // Only secure in production
       sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days - match register
+    });
+
+    console.log('Login - Cookie settings:', {
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax"
     });
 
     res.json({ 
