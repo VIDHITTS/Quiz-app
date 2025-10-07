@@ -5,10 +5,8 @@ const mongoose = require("mongoose");
 
 async function getProfile(req, res) {
   try {
-    console.log('getProfile - User from middleware:', req.user?.id);
     const user = await User.findById(req.user.id).select("-password");
     if (!user) {
-      console.log('getProfile - User not found in database');
       return res.status(404).json({ error: "User not found" });
     }
 
@@ -75,7 +73,6 @@ async function updateProfile(req, res) {
 // Get user dashboard data
 async function getDashboard(req, res) {
   try {
-    console.log('getDashboard - User from middleware:', req.user?.id);
     const userId = req.user.id;
 
     const myQuizzes = await Quiz.find({ createdBy: userId })

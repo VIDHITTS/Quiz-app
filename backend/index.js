@@ -44,8 +44,6 @@ app.use(cookieParser());
 // log requests
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
-  console.log('Request Origin:', req.headers.origin);
-  console.log('User-Agent:', req.headers['user-agent']);
   next();
 });
 

@@ -3,12 +3,9 @@ const User = require("../models/user");
 
 module.exports = async (req, res, next) => {
   try {
-    console.log('Auth middleware - Cookies received:', req.cookies);
-    console.log('Auth middleware - Headers:', req.headers.cookie);
     const token = req.cookies.token;
 
     if (!token) {
-      console.log('Auth middleware - No token found in cookies');
       return res.status(401).json({ 
         success: false,
         error: "Access denied. No token provided." 
