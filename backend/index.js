@@ -28,7 +28,8 @@ app.use(
     origin: [
       "http://localhost:5173", 
       "http://localhost:5174",
-      "https://quiz-app-beta-pearl.vercel.app"
+      "https://quiz-app-beta-pearl.vercel.app",
+      /^https:\/\/quiz-app.*\.vercel\.app$/ // Allow all Vercel preview deployments
     ],
     credentials: true, // Allow cookies to be sent
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -43,6 +44,8 @@ app.use(cookieParser());
 // log requests
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+  console.log('Request Origin:', req.headers.origin);
+  console.log('User-Agent:', req.headers['user-agent']);
   next();
 });
 

@@ -34,6 +34,7 @@ async function register(req, res) {
       secure: isProduction, // Only secure in production
       sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: '/', // Ensure cookie is available for all paths
     });
     
     console.log('Register - Cookie settings:', {
@@ -80,6 +81,7 @@ async function login(req, res) {
       secure: isProduction, // Only secure in production
       sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days - match register
+      path: '/', // Ensure cookie is available for all paths
     });
 
     console.log('Login - Cookie settings:', {
@@ -103,7 +105,8 @@ async function logout(req, res) {
   res.clearCookie("token", {
     httpOnly: true,
     secure: isProduction, // Only secure in production
-    sameSite: isProduction ? "none" : "lax" // none for cross-origin, lax for localhost
+    sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
+    path: '/', // Must match the path used when setting the cookie
   }).json({ success: true, message: "Logged out successfully" });
 }
 
