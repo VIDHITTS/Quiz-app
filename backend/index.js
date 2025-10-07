@@ -32,7 +32,7 @@ app.use(
     ],
     credentials: true, // Allow cookies to be sent
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
     optionsSuccessStatus: 200 // Some legacy browsers choke on 204
   })
 );
