@@ -18,7 +18,7 @@ const app = express();
 // allow frontend to connect
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"], // Allow both possible frontend ports
+    origin: ["http://localhost:5173", "https://quiz-app-beta-pearl.vercel.app"], // Allow both possible frontend ports
     credentials: true, // Allow cookies to be sent
   })
 );
