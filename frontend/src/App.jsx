@@ -31,19 +31,19 @@ function App() {
 
   const checkAuth = async () => {
     try {
-      console.log('Checking authentication...');
+      console.log("Checking authentication...");
       const response = await fetch(`${API_BASE}/users/profile`, {
         credentials: "include",
       });
-      
+
       if (response.ok) {
         const data = await response.json();
-        console.log('Auth check response:', data);
+        console.log("Auth check response:", data);
         if (data.success && data.user) {
           setUser(data.user);
         }
       } else {
-        console.log('Auth check failed with status:', response.status);
+        console.log("Auth check failed with status:", response.status);
         // Clear any existing user data if auth check fails
         setUser(null);
       }
@@ -57,7 +57,7 @@ function App() {
 
   const login = async (email, password) => {
     try {
-      console.log('Attempting login to:', `${API_BASE}/login`);
+      console.log("Attempting login to:", `${API_BASE}/login`);
       const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: {
@@ -68,7 +68,7 @@ function App() {
       });
 
       const data = await response.json();
-      console.log('Login response:', { status: response.status, data });
+      console.log("Login response:", { status: response.status, data });
 
       if (response.ok) {
         // Set user data immediately if available in response
@@ -90,7 +90,7 @@ function App() {
 
   const register = async (name, email, password) => {
     try {
-      console.log('Attempting registration to:', `${API_BASE}/register`);
+      console.log("Attempting registration to:", `${API_BASE}/register`);
       const response = await fetch(`${API_BASE}/register`, {
         method: "POST",
         headers: {
@@ -101,7 +101,7 @@ function App() {
       });
 
       const data = await response.json();
-      console.log('Registration response:', { status: response.status, data });
+      console.log("Registration response:", { status: response.status, data });
 
       if (response.ok) {
         // Set user data immediately from response

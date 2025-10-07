@@ -21,15 +21,16 @@ async function register(req, res) {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
-    
-    const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
-    
+
+    const isProduction =
+      process.env.NODE_ENV === "production" || process.env.RAILWAY_ENVIRONMENT;
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction, // Only secure in production
       sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      path: '/', // Ensure cookie is available for all paths
+      path: "/", // Ensure cookie is available for all paths
     });
 
     res.status(201).json({
@@ -59,20 +60,21 @@ async function login(req, res) {
       expiresIn: "7d", // Match register expiry
     });
 
-    const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
+    const isProduction =
+      process.env.NODE_ENV === "production" || process.env.RAILWAY_ENVIRONMENT;
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction, // Only secure in production
       sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days - match register
-      path: '/', // Ensure cookie is available for all paths
+      path: "/", // Ensure cookie is available for all paths
     });
 
-    res.json({ 
+    res.json({
       success: true,
       message: "Logged in successfully",
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user._id, name: user.name, email: user.email },
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -80,14 +82,17 @@ async function login(req, res) {
 }
 
 async function logout(req, res) {
-  const isProduction = process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT;
-  
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: isProduction, // Only secure in production
-    sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
-    path: '/', // Must match the path used when setting the cookie
-  }).json({ success: true, message: "Logged out successfully" });
+  const isProduction =
+    process.env.NODE_ENV === "production" || process.env.RAILWAY_ENVIRONMENT;
+
+  res
+    .clearCookie("token", {
+      httpOnly: true,
+      secure: isProduction, // Only secure in production
+      sameSite: isProduction ? "none" : "lax", // none for cross-origin, lax for localhost
+      path: "/", // Must match the path used when setting the cookie
+    })
+    .json({ success: true, message: "Logged out successfully" });
 }
 
 module.exports = {

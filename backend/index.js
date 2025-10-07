@@ -5,10 +5,10 @@ dotenv.config();
 
 // Environment detection for Railway deployment
 if (!process.env.NODE_ENV && process.env.RAILWAY_ENVIRONMENT) {
-  process.env.NODE_ENV = 'production';
+  process.env.NODE_ENV = "production";
 }
 
-console.log('Environment:', process.env.NODE_ENV);
+console.log("Environment:", process.env.NODE_ENV);
 
 const express = require("express");
 const connectDB = require("./config/db");
@@ -26,15 +26,14 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", 
+      "http://localhost:5173",
       "http://localhost:5174",
       "https://quiz-app-beta-pearl.vercel.app",
-      /^https:\/\/quiz-app.*\.vercel\.app$/ // Allow all Vercel preview deployments
     ],
     credentials: true, // Allow cookies to be sent
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-    optionsSuccessStatus: 200 // Some legacy browsers choke on 204
+    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
   })
 );
 
