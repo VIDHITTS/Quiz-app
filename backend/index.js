@@ -41,10 +41,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 // log requests
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
-  next();
-});
 
 // login/register stuff
 app.post("/register", register);
@@ -52,12 +48,6 @@ app.post("/login", login);
 app.post("/logout", logout);
 
 // test if server works
-app.get("/api/test", (req, res) => {
-  res.json({
-    message: "Backend is working!",
-    timestamp: new Date().toISOString(),
-  });
-});
 
 // quiz stuff
 app.use("/quizzes", quizRoutes);
