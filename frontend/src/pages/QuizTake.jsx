@@ -17,9 +17,6 @@ function QuizTake({ user }) {
   const [pin, setPin] = useState("");
 
   useEffect(() => {
-    console.log("QuizTake component loaded with ID:", id);
-    console.log("User:", user);
-
     if (user) {
       fetchQuiz();
     } else {
@@ -28,7 +25,6 @@ function QuizTake({ user }) {
   }, [id, user, navigate]);
 
   const fetchQuiz = async () => {
-    console.log("Fetching quiz with ID:", id);
     try {
       const response = await fetch(`${API_BASE}/quizzes/${id}`, {
         credentials: "include",
