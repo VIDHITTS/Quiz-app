@@ -4,7 +4,13 @@ import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import toast from "react-hot-toast";
 
 function LoginNew({ login }) {
@@ -56,7 +62,9 @@ function LoginNew({ login }) {
           >
             <Sparkles className="w-8 h-8 text-white" />
           </motion.div>
-          <h2 className="text-3xl font-black text-gray-900 mb-2">Welcome Back</h2>
+          <h2 className="text-3xl font-black text-gray-900 mb-2">
+            Welcome Back
+          </h2>
           <p className="text-gray-600">Sign in to continue your quiz journey</p>
         </div>
 
@@ -64,13 +72,18 @@ function LoginNew({ login }) {
         <Card className="border-2">
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
+            <CardDescription>
+              Enter your credentials to access your account
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email Field */}
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-bold text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-bold text-gray-700"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -92,7 +105,10 @@ function LoginNew({ login }) {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-bold text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-bold text-gray-700"
+                >
                   Password
                 </label>
                 <div className="relative">

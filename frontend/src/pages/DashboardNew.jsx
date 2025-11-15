@@ -1,9 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { TrendingUp, Edit, Eye, Plus, Award, ClipboardList, Target, Sparkles } from "lucide-react";
+import {
+  TrendingUp,
+  Edit,
+  Eye,
+  Plus,
+  Award,
+  ClipboardList,
+  Target,
+  Sparkles,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import toast from "react-hot-toast";
 import config from "../config";
@@ -47,7 +62,9 @@ function DashboardNew({ user }) {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-600"></div>
-          <p className="mt-4 text-gray-600 font-semibold">Loading dashboard...</p>
+          <p className="mt-4 text-gray-600 font-semibold">
+            Loading dashboard...
+          </p>
         </div>
       </div>
     );
@@ -91,7 +108,9 @@ function DashboardNew({ user }) {
               <h1 className="text-4xl font-black text-gray-900 mb-2">
                 Welcome back, {user.name}!
               </h1>
-              <p className="text-gray-600">Here's your quiz activity overview</p>
+              <p className="text-gray-600">
+                Here's your quiz activity overview
+              </p>
             </div>
             <Link to="/create-quiz">
               <Button variant="primary" size="lg" className="group">
@@ -117,11 +136,17 @@ function DashboardNew({ user }) {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-600 text-sm font-semibold mb-2">{stat.title}</p>
-                      <p className="text-4xl font-black text-gray-900">{stat.value}</p>
+                      <p className="text-gray-600 text-sm font-semibold mb-2">
+                        {stat.title}
+                      </p>
+                      <p className="text-4xl font-black text-gray-900">
+                        {stat.value}
+                      </p>
                     </div>
                     <div className={`p-4 ${stat.bg} rounded-2xl`}>
-                      <div className={`bg-gradient-to-br ${stat.gradient} bg-clip-text text-transparent`}>
+                      <div
+                        className={`bg-gradient-to-br ${stat.gradient} bg-clip-text text-transparent`}
+                      >
                         {stat.icon}
                       </div>
                     </div>
@@ -145,7 +170,9 @@ function DashboardNew({ user }) {
                   <CardTitle className="text-2xl">Recent Quizzes</CardTitle>
                   <TrendingUp className="w-6 h-6 text-blue-600" />
                 </div>
-                <CardDescription>Quizzes you've created recently</CardDescription>
+                <CardDescription>
+                  Quizzes you've created recently
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 {dashboardData?.recentQuizzes?.length > 0 ? (
@@ -189,7 +216,9 @@ function DashboardNew({ user }) {
                     <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
                       <ClipboardList className="w-10 h-10 text-blue-600" />
                     </div>
-                    <p className="text-gray-600 mb-4">You haven't created any quizzes yet.</p>
+                    <p className="text-gray-600 mb-4">
+                      You haven't created any quizzes yet.
+                    </p>
                     <Link to="/create-quiz">
                       <Button variant="primary">
                         <Plus className="w-4 h-4 mr-2" />
@@ -249,7 +278,9 @@ function DashboardNew({ user }) {
                                 </span>
                               </div>
                               <div className="text-sm text-gray-500">
-                                {new Date(attempt.createdAt).toLocaleDateString()}
+                                {new Date(
+                                  attempt.createdAt
+                                ).toLocaleDateString()}
                               </div>
                             </div>
                           </CardContent>
@@ -262,7 +293,9 @@ function DashboardNew({ user }) {
                     <div className="w-20 h-20 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Target className="w-10 h-10 text-purple-600" />
                     </div>
-                    <p className="text-gray-600 mb-4">You haven't taken any quizzes yet.</p>
+                    <p className="text-gray-600 mb-4">
+                      You haven't taken any quizzes yet.
+                    </p>
                     <Link to="/quizzes">
                       <Button variant="primary">
                         <ClipboardList className="w-4 h-4 mr-2" />

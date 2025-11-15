@@ -1,10 +1,19 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, List, PlusCircle, User, LogOut, LogIn, UserPlus, Sparkles } from "lucide-react";
+import {
+  Home,
+  List,
+  PlusCircle,
+  User,
+  LogOut,
+  LogIn,
+  UserPlus,
+  Sparkles,
+} from "lucide-react";
 
 function NavbarNew({ user, logout }) {
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -13,10 +22,7 @@ function NavbarNew({ user, logout }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link 
-            to="/" 
-            className="flex items-center space-x-3 group"
-          >
+          <Link to="/" className="flex items-center space-x-3 group">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.6 }}
@@ -40,10 +46,16 @@ function NavbarNew({ user, logout }) {
 
             {user ? (
               <>
-                <NavLink to="/dashboard" icon={<Sparkles className="w-4 h-4" />}>
+                <NavLink
+                  to="/dashboard"
+                  icon={<Sparkles className="w-4 h-4" />}
+                >
                   Dashboard
                 </NavLink>
-                <NavLink to="/create-quiz" icon={<PlusCircle className="w-4 h-4" />}>
+                <NavLink
+                  to="/create-quiz"
+                  icon={<PlusCircle className="w-4 h-4" />}
+                >
                   Create
                 </NavLink>
                 <NavLink to="/profile" icon={<User className="w-4 h-4" />}>
@@ -76,7 +88,10 @@ function NavbarNew({ user, logout }) {
                   <LogIn className="w-4 h-4" />
                   <span>Login</span>
                 </Link>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Link
                     to="/register"
                     className="flex items-center space-x-2 px-6 py-2.5 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-200"
@@ -92,8 +107,18 @@ function NavbarNew({ user, logout }) {
           {/* Mobile menu button */}
           <div className="md:hidden">
             <button className="p-2 rounded-lg hover:bg-gray-100">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
               </svg>
             </button>
           </div>

@@ -4,7 +4,13 @@ import { motion } from "framer-motion";
 import { User, Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import toast from "react-hot-toast";
 
 function RegisterNew({ register }) {
@@ -61,7 +67,9 @@ function RegisterNew({ register }) {
           >
             <Sparkles className="w-8 h-8 text-white" />
           </motion.div>
-          <h2 className="text-3xl font-black text-gray-900 mb-2">Join QuizMaster</h2>
+          <h2 className="text-3xl font-black text-gray-900 mb-2">
+            Join QuizMaster
+          </h2>
           <p className="text-gray-600">Create an account to get started</p>
         </div>
 
@@ -75,7 +83,10 @@ function RegisterNew({ register }) {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Field */}
               <div className="space-y-2">
-                <label htmlFor="name" className="block text-sm font-bold text-gray-700">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-bold text-gray-700"
+                >
                   Full Name
                 </label>
                 <div className="relative">
@@ -97,7 +108,10 @@ function RegisterNew({ register }) {
 
               {/* Email Field */}
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-bold text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-bold text-gray-700"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -119,7 +133,10 @@ function RegisterNew({ register }) {
 
               {/* Password Field */}
               <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-bold text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-bold text-gray-700"
+                >
                   Password
                 </label>
                 <div className="relative">
@@ -138,7 +155,9 @@ function RegisterNew({ register }) {
                     minLength={6}
                   />
                 </div>
-                <p className="text-xs text-gray-500">Must be at least 6 characters</p>
+                <p className="text-xs text-gray-500">
+                  Must be at least 6 characters
+                </p>
               </div>
 
               {/* Submit Button */}

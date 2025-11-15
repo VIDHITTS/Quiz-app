@@ -5,7 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 import config from "./config";
 import "./App.css";
 
@@ -126,20 +126,20 @@ function App() {
 
   return (
     <Router>
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 3000,
           style: {
-            background: '#10b981',
-            color: '#fff',
-            fontWeight: 'bold',
+            background: "#10b981",
+            color: "#fff",
+            fontWeight: "bold",
           },
           success: {
             duration: 3000,
             iconTheme: {
-              primary: '#10b981',
-              secondary: '#fff',
+              primary: "#10b981",
+              secondary: "#fff",
             },
           },
         }}
