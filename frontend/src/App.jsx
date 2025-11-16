@@ -18,6 +18,7 @@ import QuizList from "./pages/QuizList";
 import QuizCreate from "./pages/QuizCreate";
 import QuizTake from "./pages/QuizTake";
 import QuizEdit from "./pages/QuizEdit";
+import QuizResults from "./pages/QuizResults";
 import Profile from "./pages/Profile";
 
 const API_BASE = config.API_BASE;
@@ -179,6 +180,12 @@ function App() {
               }
             />
             <Route path="/quiz/:id" element={<QuizTake user={user} />} />
+            <Route
+              path="/quiz/:id/results"
+              element={
+                user ? <QuizResults user={user} /> : <Navigate to="/login" />
+              }
+            />
             <Route
               path="/edit-quiz/:id"
               element={

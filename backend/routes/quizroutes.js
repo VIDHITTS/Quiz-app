@@ -8,6 +8,7 @@ const {
   updateQuiz,
   deleteQuiz,
   getTrendingQuizzes,
+  getQuizResults,
 } = require("../controllers/quizcontrol.js");
 const protect = require("../middleware/authmiddleware.js");
 
@@ -24,6 +25,7 @@ router.use(protect);
 router.post("/", createQuiz);
 router.get("/my-quizzes", getMyQuizzes);
 router.get("/:id", getQuizById);
+router.get("/:id/results", getQuizResults);
 router.put("/:id", updateQuiz);
 router.delete("/:id", deleteQuiz);
 

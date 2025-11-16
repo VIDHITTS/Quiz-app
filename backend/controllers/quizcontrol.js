@@ -386,6 +386,70 @@ async function getTrendingQuizzes(req, res) {
   }
 }
 
+async function getQuizResults(req, res) {
+  try {
+    const { id } = req.params;
+    const Attempt = require("../models/attempt.js");
+
+    const quiz = await Quiz.findById(id);
+    if (!quiz) {
+      return res.status(404).json({ error: "Quiz not found" });
+    }
+
+    if (quiz.createdBy.toString() !== req.user.id) {
+      return res.status(403).json({ error: "Not authorized to view results" });
+    }
+
+    const attempts = await Attempt.find({ quiz: id })
+      .populate("student", "name email")
+      .sort({ createdAt: -1 });
+
+    const results = attempts.map((attempt) => ({
+      id: attempt._id,
+      studentName: attempt.student.name,
+      studentEmail: attempt.student.email,
+      score: attempt.score,
+      totalQuestions: attempt.totalQuestions,
+      percentage: attempt.percentage,
+      attemptedAt: attempt.createdAt,
+      answers: attempt.answers,
+    }));
+
+    const stats = {
+      totalAttempts: attempts.length,
+      averageScore:
+        attempts.length > 0
+          ? (
+              attempts.reduce((sum, a) => sum + a.percentage, 0) /
+              attempts.length
+            ).toFixed(1)
+          : 0,
+      highestScore:
+        attempts.length > 0
+          ? Math.max(...attempts.map((a) => a.percentage))
+          : 0,
+      lowestScore:
+        attempts.length > 0
+          ? Math.min(...attempts.map((a) => a.percentage))
+          : 0,
+    };
+
+    res.status(200).json({
+      success: true,
+      quiz: {
+        title: quiz.title,
+        description: quiz.description,
+        totalQuestions: quiz.questions.length,
+      },
+      stats,
+      results,
+    });
+  } catch (error) {
+    console.error("Error fetching quiz results:", error);
+    res.status(500).json({ error: "Failed to fetch quiz results" });
+  }
+}
+
 module.exports = {
   createQuiz,
   getAllQuizzes,
@@ -395,4 +459,5 @@ module.exports = {
   updateQuiz,
   deleteQuiz,
   getTrendingQuizzes,
+  getQuizResults,
 };

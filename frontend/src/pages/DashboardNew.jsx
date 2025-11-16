@@ -10,6 +10,7 @@ import {
   ClipboardList,
   Target,
   Sparkles,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -96,7 +97,7 @@ function DashboardNew({ user }) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <motion.div
@@ -123,7 +124,7 @@ function DashboardNew({ user }) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Grid */}
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => (
             <motion.div
@@ -158,7 +159,7 @@ function DashboardNew({ user }) {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Recent Quizzes Section */}
+
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -193,8 +194,14 @@ function DashboardNew({ user }) {
                               {quiz.description || "No description"}
                             </p>
                             <div className="flex gap-2">
+                              <Link to={`/quiz/${quiz._id}/results`}>
+                                <Button variant="default" size="sm">
+                                  <BarChart3 className="w-4 h-4 mr-1" />
+                                  Results
+                                </Button>
+                              </Link>
                               <Link to={`/edit-quiz/${quiz._id}`}>
-                                <Button variant="primary" size="sm">
+                                <Button variant="outline" size="sm">
                                   <Edit className="w-4 h-4 mr-1" />
                                   Edit
                                 </Button>
@@ -231,7 +238,6 @@ function DashboardNew({ user }) {
             </Card>
           </motion.div>
 
-          {/* Recent Attempts Section */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
