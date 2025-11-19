@@ -1,10 +1,25 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Trash2, Lock, Globe, Save, AlertCircle, Sparkles, ArrowLeft } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  Lock,
+  Globe,
+  Save,
+  AlertCircle,
+  Sparkles,
+  ArrowLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import toast from "react-hot-toast";
 import config from "../config";
@@ -44,7 +59,8 @@ function QuizEdit({ user }) {
         // Convert backend isPublic to frontend format and ensure correct field names
         const fetchedQuiz = {
           ...data.quiz,
-          isPublic: data.quiz.isPublic !== undefined ? data.quiz.isPublic : true,
+          isPublic:
+            data.quiz.isPublic !== undefined ? data.quiz.isPublic : true,
           accessPin: data.quiz.accessPin || "",
         };
         setQuiz(fetchedQuiz);
@@ -199,7 +215,7 @@ function QuizEdit({ user }) {
   };
 
   if (!user) return null;
-  
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
@@ -210,7 +226,7 @@ function QuizEdit({ user }) {
       </div>
     );
   }
-  
+
   if (error && !quiz.title) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
@@ -248,14 +264,16 @@ function QuizEdit({ user }) {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Button>
-          
+
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
             <div>
               <h1 className="text-4xl font-bold text-gray-900">Edit Quiz</h1>
-              <p className="text-gray-600 mt-1">Update your quiz details and questions</p>
+              <p className="text-gray-600 mt-1">
+                Update your quiz details and questions
+              </p>
             </div>
           </div>
         </motion.div>
@@ -287,7 +305,9 @@ function QuizEdit({ user }) {
             <Card className="border-2 hover:shadow-lg transition-shadow">
               <CardHeader>
                 <CardTitle>Basic Information</CardTitle>
-                <CardDescription>Set your quiz title and description</CardDescription>
+                <CardDescription>
+                  Set your quiz title and description
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -328,8 +348,12 @@ function QuizEdit({ user }) {
                             <Globe className="w-5 h-5 text-green-600" />
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-900">Public Quiz</p>
-                            <p className="text-sm text-gray-600">Anyone can access this quiz</p>
+                            <p className="font-semibold text-gray-900">
+                              Public Quiz
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Anyone can access this quiz
+                            </p>
                           </div>
                         </>
                       ) : (
@@ -338,8 +362,12 @@ function QuizEdit({ user }) {
                             <Lock className="w-5 h-5 text-orange-600" />
                           </div>
                           <div>
-                            <p className="font-semibold text-gray-900">Private Quiz</p>
-                            <p className="text-sm text-gray-600">Requires PIN to access</p>
+                            <p className="font-semibold text-gray-900">
+                              Private Quiz
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Requires PIN to access
+                            </p>
                           </div>
                         </>
                       )}
@@ -402,7 +430,9 @@ function QuizEdit({ user }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle>Questions ({quiz.questions.length})</CardTitle>
-                    <CardDescription>Add and configure your quiz questions</CardDescription>
+                    <CardDescription>
+                      Add and configure your quiz questions
+                    </CardDescription>
                   </div>
                   <Button type="button" onClick={addQuestion} size="sm">
                     <Plus className="w-4 h-4 mr-2" />
@@ -415,7 +445,11 @@ function QuizEdit({ user }) {
                   <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
                     <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-600 mb-4">No questions added yet</p>
-                    <Button type="button" onClick={addQuestion} variant="default">
+                    <Button
+                      type="button"
+                      onClick={addQuestion}
+                      variant="default"
+                    >
                       <Plus className="w-4 h-4 mr-2" />
                       Add Your First Question
                     </Button>
@@ -431,7 +465,10 @@ function QuizEdit({ user }) {
                       <Card className="border-2 border-blue-100 hover:border-blue-300 transition-colors">
                         <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
                           <div className="flex items-center justify-between">
-                            <Badge variant="default" className="text-base px-3 py-1">
+                            <Badge
+                              variant="default"
+                              className="text-base px-3 py-1"
+                            >
                               Question {questionIndex + 1}
                             </Badge>
                             {quiz.questions.length > 1 && (
@@ -455,7 +492,11 @@ function QuizEdit({ user }) {
                             <Input
                               value={question.text}
                               onChange={(e) =>
-                                updateQuestion(questionIndex, "text", e.target.value)
+                                updateQuestion(
+                                  questionIndex,
+                                  "text",
+                                  e.target.value
+                                )
                               }
                               placeholder="Enter your question"
                               required
@@ -508,7 +549,10 @@ function QuizEdit({ user }) {
                                     }`}
                                   />
                                   {option.correct && (
-                                    <Badge variant="default" className="bg-green-600">
+                                    <Badge
+                                      variant="default"
+                                      className="bg-green-600"
+                                    >
                                       Correct
                                     </Badge>
                                   )}
@@ -541,7 +585,12 @@ function QuizEdit({ user }) {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={saving} size="lg" className="min-w-[200px]">
+            <Button
+              type="submit"
+              disabled={saving}
+              size="lg"
+              className="min-w-[200px]"
+            >
               {saving ? (
                 <>
                   <div className="inline-block animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
