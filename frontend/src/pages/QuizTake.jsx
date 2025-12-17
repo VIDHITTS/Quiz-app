@@ -38,7 +38,7 @@ function QuizTake({ user }) {
     if (user) {
       fetchQuiz();
     } else {
-      navigate("/login");
+      navigate("/login", { state: { from: `/quiz/${id}` } });
     }
   }, [id, user, navigate]);
 

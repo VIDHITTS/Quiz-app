@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,10 @@ function LoginNew({ login }) {
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get the redirect path from location state (if user was redirected here)
+  const from = location.state?.from || "/dashboard";
 
   const handleChange = (e) => {
     setFormData({
@@ -36,7 +40,7 @@ function LoginNew({ login }) {
 
     if (result.success) {
       toast.success("Welcome back!");
-      navigate("/dashboard");
+      navigate(from); // Redirect to the original page or dashboard
     } else {
       toast.error(result.error);
     }

@@ -118,21 +118,20 @@ async function getQuizById(req, res) {
       return res.status(404).json({ error: "Quiz not found" });
     }
 
-    if (
-      !quiz.isPublic &&
-      (!req.user || quiz.createdBy.toString() !== req.user.id)
-    ) {
-      return res
-        .status(403)
-        .json({ error: "Access denied. This is a private quiz." });
+    // Check if quiz is private and user has access
+    if (!quiz.isPublic) {
+      if (!req.user || quiz.createdBy._id.toString() !== req.user.id) {
+        return res
+          .status(403)
+          .json({ error: "Access denied. This is a private quiz." });
+      }
     }
 
     // Hide correct answers unless user is the creator or explicitly requesting answers
     let responseQuiz = quiz.toObject();
-    if (
-      quiz.createdBy._id.toString() !== req.user.id &&
-      includeAnswers !== "true"
-    ) {
+    const isCreator = req.user && quiz.createdBy._id.toString() === req.user.id;
+    
+    if (!isCreator && includeAnswers !== "true") {
       responseQuiz.questions = responseQuiz.questions.map((q) => ({
         ...q,
         options: q.options.map((opt) => ({ text: opt.text, _id: opt._id })),

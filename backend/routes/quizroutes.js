@@ -17,7 +17,6 @@ const router = express.Router();
 // Public routes (no auth required)
 router.get("/public", getAllQuizzes);
 router.get("/trending", getTrendingQuizzes);
-router.post("/:id/access", getQuizForAttempt);
 
 // Protected routes (auth required)
 router.use(protect);
@@ -25,6 +24,7 @@ router.use(protect);
 router.post("/", createQuiz);
 router.get("/my-quizzes", getMyQuizzes);
 router.get("/:id", getQuizById);
+router.post("/:id/access", getQuizForAttempt);
 router.get("/:id/results", getQuizResults);
 router.put("/:id", updateQuiz);
 router.delete("/:id", deleteQuiz);
