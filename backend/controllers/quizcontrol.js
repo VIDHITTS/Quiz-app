@@ -130,7 +130,7 @@ async function getQuizById(req, res) {
     // Hide correct answers unless user is the creator or explicitly requesting answers
     let responseQuiz = quiz.toObject();
     const isCreator = req.user && quiz.createdBy._id.toString() === req.user.id;
-    
+
     if (!isCreator && includeAnswers !== "true") {
       responseQuiz.questions = responseQuiz.questions.map((q) => ({
         ...q,

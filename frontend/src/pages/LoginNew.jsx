@@ -21,7 +21,7 @@ function LoginNew({ login }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Get the redirect path from location state (if user was redirected here)
   const from = location.state?.from || "/dashboard";
 
