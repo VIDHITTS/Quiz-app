@@ -283,7 +283,7 @@ Make sure MongoDB is running on your system. The application will automatically 
 
 This project is open source and available under the MIT License.
 
-## Support
+## Support 💬
 
 For issues, questions, or contributions, please open an issue in the repository or contact the development team.
 
