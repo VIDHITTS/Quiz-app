@@ -8,5 +8,6 @@
 .main-content {
   flex: 1;
   width: 100%;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 60px);
+  padding-bottom: 1rem;
 }
