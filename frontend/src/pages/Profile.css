@@ -20,10 +20,10 @@
 }
 
 .profile-content {
-  background: linear-gradient(135deg, white 0%, #f8fafc 100%);
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  border: 2px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
   overflow: hidden;
 }
 
@@ -46,15 +46,15 @@
 }
 
 .avatar-circle {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  width: 72px;
+  height: 72px;
+  background: #2563eb;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.8rem;
+  font-weight: 600;
   color: white;
   margin: 0 auto 1rem auto;
 }
