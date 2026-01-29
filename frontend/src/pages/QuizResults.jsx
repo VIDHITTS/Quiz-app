@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -11,6 +11,8 @@ import {
   BarChart3,
   Trophy,
   Target,
+  ArrowUpDown,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +33,8 @@ function QuizResults() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [quizData, setQuizData] = useState(null);
+  const [sortBy, setSortBy] = useState("score");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchResults();
@@ -90,6 +94,16 @@ function QuizResults() {
   if (!quizData) return null;
 
   const { quiz, stats, results } = quizData;
+
+  const filteredAndSorted = [...results]
+    .filter((r) =>
+      r.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.studentEmail.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === "score") return b.percentage - a.percentage;
+      return new Date(b.attemptedAt) - new Date(a.attemptedAt);
+    });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
@@ -220,21 +234,49 @@ function QuizResults() {
         >
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5" />
-                All Attempts
-              </CardTitle>
-              <CardDescription>
-                Detailed results of all quiz attempts
-              </CardDescription>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5" />
+                    Scoreboard
+                  </CardTitle>
+                  <CardDescription>
+                    {results.length} total attempts
+                  </CardDescription>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search students..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 w-48"
+                    />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setSortBy(sortBy === "score" ? "date" : "score")}
+                  >
+                    <ArrowUpDown className="w-4 h-4 mr-1" />
+                    {sortBy === "score" ? "By Score" : "By Date"}
+                  </Button>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
-              {results.length === 0 ? (
+              {filteredAndSorted.length === 0 ? (
                 <div className="text-center py-12">
                   <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-600 font-medium">No attempts yet</p>
+                  <p className="text-gray-600 font-medium">
+                    {searchQuery ? "No matching students found" : "No attempts yet"}
+                  </p>
                   <p className="text-gray-500 text-sm mt-1">
-                    Results will appear here when students take the quiz
+                    {searchQuery
+                      ? "Try a different search term"
+                      : "Results will appear here when students take the quiz"}
                   </p>
                 </div>
               ) : (
@@ -260,7 +302,7 @@ function QuizResults() {
                       </tr>
                     </thead>
                     <tbody>
-                      {results.map((result, index) => (
+                      {filteredAndSorted.map((result, index) => (
                         <motion.tr
                           key={result.id}
                           initial={{ opacity: 0, x: -20 }}
