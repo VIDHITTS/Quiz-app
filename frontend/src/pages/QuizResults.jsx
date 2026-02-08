@@ -25,6 +25,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import toast from "react-hot-toast";
 import config from "../config";
+import "./QuizResults.css";
 
 const API_BASE = config.API_BASE;
 

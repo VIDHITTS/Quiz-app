@@ -1,0 +1,83 @@
+/* Scoreboard table styles */
+.scoreboard-search {
+    padding-left: 2.25rem;
+    padding-right: 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    width: 12rem;
+    transition: border-color 0.2s ease;
+}
+
+.scoreboard-search:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.scoreboard-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.scoreboard-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.scoreboard-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.scoreboard-table tr:hover td {
+    background: #f9fafb;
+}
+
+.scoreboard-rank {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.scoreboard-student-name {
+    font-weight: 600;
+    color: #111827;
+}
+
+.scoreboard-student-email {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.scoreboard-score {
+    font-weight: 600;
+    color: #111827;
+}
+
+.scoreboard-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+    .scoreboard-search {
+        width: 100%;
+    }
+
+    .scoreboard-table th:nth-child(4),
+    .scoreboard-table td:nth-child(4) {
+        display: none;
+    }
+}
