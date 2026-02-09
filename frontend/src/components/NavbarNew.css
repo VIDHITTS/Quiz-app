@@ -1,1 +1,4 @@
-/* Minimal custom styles for Navbar */
+/* Navbar overrides */
+.navbar-bottom-border {
+    border-bottom: 1px solid #e5e7eb;
+}
