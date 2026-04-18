@@ -12,7 +12,9 @@ const QuizSchema = new mongoose.Schema(
     ],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     isPublic: { type: Boolean, default: true },
+    isLiveQuiz: { type: Boolean, default: false },
     accessPin: { type: String, default: null },
+    timeLimit: { type: Number, default: 15 },
   },
   { timestamps: true }
 );
