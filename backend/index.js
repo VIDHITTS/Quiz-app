@@ -11,6 +11,8 @@ if (!process.env.NODE_ENV && process.env.RAILWAY_ENVIRONMENT) {
 console.log("Environment:", process.env.NODE_ENV);
 
 const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -19,8 +21,21 @@ const { register, login, logout } = require("./controllers/authcontroller.js");
 const quizRoutes = require("./routes/quizroutes.js");
 const attemptRoutes = require("./routes/attemptroutes.js");
 const userRoutes = require("./routes/userroutes.js");
+const liveQuizRoutes = require("./routes/liveQuizRoutes.js");
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://quiz-app-beta-pearl.vercel.app",
+    ],
+    credentials: true,
+    methods: ["GET", "POST"],
+  },
+});
 
 // allow frontend to connect
 app.use(
@@ -53,13 +68,17 @@ app.post("/logout", logout);
 app.use("/quizzes", quizRoutes);
 app.use("/attempts", attemptRoutes);
 app.use("/users", userRoutes);
+app.use("/live-quizzes", liveQuizRoutes);
+
+// Initialize socket handlers
+require("./socket/liveQuizSocket")(io);
 
 const PORT = process.env.PORT || 3040;
 
 // start server when db is ready
 connectDB()
   .then(() => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
   .catch((err) => {
     console.error("Failed to connect to DB, server not started", err);
