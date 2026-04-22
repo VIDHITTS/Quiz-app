@@ -20,6 +20,11 @@ import QuizTake from "./pages/QuizTake";
 import QuizEdit from "./pages/QuizEdit";
 import QuizResults from "./pages/QuizResults";
 import Profile from "./pages/Profile";
+import LiveQuizCreate from "./pages/LiveQuizCreate";
+import JoinLiveQuiz from "./pages/JoinLiveQuiz";
+import LiveQuizTake from "./pages/LiveQuizTake";
+import LiveQuizHost from "./pages/LiveQuizHost";
+import LiveQuizResults from "./pages/LiveQuizResults";
 
 const API_BASE = config.API_BASE;
 
@@ -195,7 +200,61 @@ function App() {
             <Route
               path="/profile"
               element={
-                user ? <Profile user={user} /> : <Navigate to="/login" />
+                user ? (
+                  <Profile user={user} logout={logout} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/live-quiz-create"
+              element={
+                user ? (
+                  <LiveQuizCreate user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/join-live-quiz"
+              element={
+                user ? (
+                  <JoinLiveQuiz user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/live-quiz-take/:roomCode"
+              element={
+                user ? (
+                  <LiveQuizTake user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/live-quiz-host/:roomCode"
+              element={
+                user ? (
+                  <LiveQuizHost user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
+            <Route
+              path="/live-quiz-results/:roomCode"
+              element={
+                user ? (
+                  <LiveQuizResults user={user} />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
           </Routes>
